@@ -66,7 +66,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: new PageView(
         controller: _pageController,
         onPageChanged: _pageChanged,
-        children: _pages,
+        children: _makePages(),
+        // children: _pages,
       ),
       bottomNavigationBar: new BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -75,6 +76,16 @@ class _MyHomePageState extends State<MyHomePage> {
         items: _buildBottomNavigationBarItems(),
       ),
     );
+  }
+
+  List<Widget> _makePages() {
+    List<Widget> pages = [
+      new WordsFeed(),
+      new Dictionary(),
+      new Favorites(),
+      new Settings()
+    ];
+    return pages;
   }
 
   void _pageChanged(int index) {

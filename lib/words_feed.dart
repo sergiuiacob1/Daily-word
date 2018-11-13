@@ -18,12 +18,29 @@ class WordsFeed extends AppPage {
 
   static Future<List<Widget>> _buildWords() async {
     List<Widget> _words = [];
-    String rez = await _wordsFeedStorage.readFile();
+    // String rez = await _wordsFeedStorage.readFile();
     _words.add(
-      new Text(
-        rez,
-      ),
+      _buildWordTile('Head', 'Superior body part. Metal head. Pies are great!'),
     );
     return _words;
+  }
+
+  static Widget _buildWordTile(String _title, String _definition) {
+    return new Container(
+        alignment: Alignment.center,
+        color: Colors.pink[50],
+        width: 200.0,
+        height: 100.0,
+        child: new ListTile(
+          title: new Text(
+            _title,
+            // style: Theme.of(context).textTheme.display1, //HERE
+          ),
+          subtitle: new Text(
+            _definition,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ));
   }
 }

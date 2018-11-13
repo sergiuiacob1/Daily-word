@@ -69,7 +69,6 @@ class _AppPageState extends State<AppPage> {
           case ConnectionState.done:
             if (snapshot.hasError)
               return _sliverListPlaceholder('Error: ${snapshot.error}');
-
             return snapshot.data;
         }
         return null; // unreachable
