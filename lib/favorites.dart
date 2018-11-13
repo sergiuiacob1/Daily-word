@@ -5,7 +5,7 @@ class Favorites extends AppPage {
   Favorites({Key key})
       : super(key: key, title: "Favorites", content: _buildContent());
 
-  static Widget _buildContent() {
+  static Future<Widget> _buildContent() async {
     return new SliverList(
       delegate: new SliverChildListDelegate(
         buildTextViews(50),

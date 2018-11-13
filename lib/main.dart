@@ -85,7 +85,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _navigationBarItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
       _pageController.animateToPage(
         index,
         duration: Duration(milliseconds: 500),

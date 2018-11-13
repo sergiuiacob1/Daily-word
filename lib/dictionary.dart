@@ -5,7 +5,7 @@ class Dictionary extends AppPage {
   Dictionary({Key key})
       : super(key: key, title: "Dictionary", content: _buildContent());
 
-  static Widget _buildContent() {
+  static Future<Widget> _buildContent() async {
     return new SliverList(
       delegate: new SliverChildListDelegate(
         buildTextViews(50),
