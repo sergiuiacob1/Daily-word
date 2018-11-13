@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'words_feed.dart';
+import 'dictionary.dart';
+import 'favorites.dart';
+import 'settings.dart';
 
 void main() => runApp(MyApp());
 
@@ -36,30 +39,35 @@ class _MyHomePageState extends State<MyHomePage> {
     Icons.favorite,
     Icons.settings
   ];
-  List<ScrollController> _scrollViewController = [];
   int _selectedIndex;
+  final _pageController = new PageController(initialPage: 0);
+  final List<Widget> _pages = [
+    new WordsFeed(),
+    new Dictionary(),
+    new Favorites(),
+    new Settings()
+  ];
 
   @override
   void initState() {
     super.initState();
-    for (var i = 0; i < 4; i++) {
-      _scrollViewController.add(new ScrollController());
-    }
     _selectedIndex = 0;
   }
 
   @override
   void dispose() {
-    for (var i = 0; i < 4; i++) {
-      _scrollViewController[i].dispose();
-    }
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _getPageContent(_selectedIndex),
+      body: new PageView(
+        controller: _pageController,
+        onPageChanged: _pageChanged,
+        children: _pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
@@ -69,21 +77,21 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _navigationBarItemTapped(int index) {
+  void _pageChanged(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  Widget _getPageContent(int index) {
-    return new CustomScrollView(
-      controller: _scrollViewController[index],
-      scrollDirection: Axis.vertical,
-      slivers: <Widget>[
-        _getSliverAppBar(index),
-        _getTabContent(index),
-      ],
-    );
+  void _navigationBarItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      _pageController.animateToPage(
+        index,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 
   List<BottomNavigationBarItem> _buildBottomNavigationBarItems() {
@@ -97,40 +105,5 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }
     return _items;
-  }
-
-  Widget _getSliverAppBar(int index) {
-    return new SliverAppBar(
-      expandedHeight: 200.0,
-      pinned: true,
-      flexibleSpace: new FlexibleSpaceBar(
-        title: new Text(_pageTitles[index]),
-      ),
-    );
-  }
-
-  List<Widget> buildTextViews(int count) {
-    List<Widget> strings = List();
-    for (int i = 0; i < count; i++) {
-      strings.add(new Center(
-          child: new Padding(
-              padding: new EdgeInsets.all(16.0),
-              child: new Text("Item number " + i.toString(),
-                  style: new TextStyle(fontSize: 20.0)))));
-    }
-    return strings;
-  }
-
-  Widget _getTabContent(int index) {
-    switch (index) {
-      case 0:
-        return new WordsFeed();
-      default:
-        return new SliverList(
-          delegate: new SliverChildListDelegate(
-            buildTextViews(50),
-          ),
-        );
-    }
   }
 }

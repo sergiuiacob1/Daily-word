@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'app_page.dart';
 
-class WordsFeed extends AppPage {
-  WordsFeed({Key key})
-      : super(key: key, title: "Words Feed", content: _buildContent());
+class Dictionary extends AppPage {
+  Dictionary({Key key})
+      : super(key: key, title: "Dictionary", content: _buildContent());
 
   static Widget _buildContent() {
     return new SliverList(
@@ -19,7 +19,7 @@ class WordsFeed extends AppPage {
       strings.add(new Center(
           child: new Padding(
               padding: new EdgeInsets.all(16.0),
-              child: new Text("Item number " + i.toString(),
+              child: new Text("Item number dictionary " + i.toString(),
                   style: new TextStyle(fontSize: 20.0)))));
     }
     return strings;
