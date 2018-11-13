@@ -29,11 +29,10 @@ class _WordsFeedState extends State<WordsFeed> {
   @override
   void initState() {
     super.initState();
-    content = _buildContent(); 
     print('Creating: $widget.title');
-        WidgetsBinding.instance
-        .addPostFrameCallback((_) => content = _buildContent());
-
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+          content = _buildContent();
+        }));
   }
 
   @override

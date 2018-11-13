@@ -3,12 +3,16 @@ import 'words_feed.dart';
 import 'dictionary.dart';
 import 'favorites.dart';
 import 'settings.dart';
+import 'word_notifier.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final WordNotifier _wordNotifier = new WordNotifier();
+
   @override
   Widget build(BuildContext context) {
+    _wordNotifier.scheduleNotification();
     return MaterialApp(
       title: 'Daily Word',
       theme: ThemeData(

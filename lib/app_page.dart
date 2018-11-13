@@ -25,8 +25,9 @@ Widget buildFutureContent(Future<Widget> content) {
         case ConnectionState.waiting:
           return _sliverListPlaceholder('Waiting...');
         case ConnectionState.done:
-          if (snapshot.hasError)
-            return _sliverListPlaceholder('Error: ${snapshot.error}');
+          if (snapshot.hasError){
+            print(snapshot.error);
+            return _sliverListPlaceholder('Error: ${snapshot.error}');}
           return snapshot.data;
       }
       return null; // unreachable
