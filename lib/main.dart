@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPageChanged: _pageChanged,
         children: _pages,
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: new BottomNavigationBar(
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
         onTap: _navigationBarItemTapped,

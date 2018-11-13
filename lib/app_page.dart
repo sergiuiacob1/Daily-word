@@ -1,33 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
+class DoubleHolder {
+  double value = 0.0;
+}
+
 class AppPage extends StatefulWidget {
   final String title;
   final Widget content;
+  final DoubleHolder scrollOffset = new DoubleHolder();
+
   AppPage({Key key, @required this.title, @required this.content})
       : assert(title != null),
         assert(content != null),
         super(key: key);
+
+  double getScrollOffset() {
+    return scrollOffset.value;
+  }
+
+  void setScrollOffset(double _aux) {
+    scrollOffset.value = _aux;
+  }
 
   @override
   _AppPageState createState() => new _AppPageState();
 }
 
 class _AppPageState extends State<AppPage> {
-  final _scrollController = new ScrollController();
-
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) => _updateScroll(context));
   }
-
-  // void _updateScroll(BuildContext context) {
-  //   _scrollController.jumpTo(_scrollController.offset);
-  // }
 
   @override
   Widget build(BuildContext context) {
+    ScrollController _scrollController =
+        new ScrollController(initialScrollOffset: widget.getScrollOffset());
     return new NotificationListener(
       child: new CustomScrollView(
         controller: _scrollController,
@@ -37,15 +46,12 @@ class _AppPageState extends State<AppPage> {
           widget.content,
         ],
       ),
-      onNotification: _onNotification,
+      onNotification: (notification) {
+        if (notification is ScrollNotification) {
+          widget.setScrollOffset(notification.metrics.pixels);
+        }
+      },
     );
-  }
-
-  bool _onNotification(Notification notification) {
-    if (notification is ScrollNotification) {
-      _scrollController.jumpTo(notification.metrics.pixels);
-    }
-    return true;
   }
 
   Widget _buildSliverAppBar() {
