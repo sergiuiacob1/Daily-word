@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'app_page.dart' as PageUtils;
 import 'words_feed_storage.dart';
 import 'word.dart';
+import 'language.dart';
 
 class WordsFeed extends StatefulWidget {
-  final WordsFeedStorage _wordsFeedStorage = new WordsFeedStorage();
+  final WordsFeedStorage wordsFeedStorage = new WordsFeedStorage();
   final String title = "Words Feed";
   final PageUtils.DoubleHolder scrollOffset = new PageUtils.DoubleHolder();
 
@@ -73,10 +74,13 @@ class _WordsFeedState extends State<WordsFeed> {
 
   Future<List<Widget>> _buildWords() async {
     List<Widget> _words = [];
-    // String rez = await _wordsFeedStorage.readFile();
+    // Word _word = new Word (language: languages['Romanian'], name: 'Masina', definition: 'Vehicul Motorizat', isFavorite: false);
+    // String rez = await wordsFeedStorage.readFile();
+    
     _words.add(
       _buildWordWidget(
         new Word(
+          language: languages['English'],
           name: 'Head',
           definition:
               'Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!',
@@ -87,6 +91,7 @@ class _WordsFeedState extends State<WordsFeed> {
     _words.add(
       _buildWordWidget(
         new Word(
+          language: languages['Romanian'],
           name: 'Masina',
           definition: 'Vehicul motorizat',
           isFavorite: true,
@@ -126,7 +131,8 @@ class _WordsFeedState extends State<WordsFeed> {
             new Divider(),
             new Text(
               word.definition,
-              style: TextStyle (fontSize: Theme.of(context).textTheme.subhead.fontSize),
+              style: TextStyle(
+                  fontSize: Theme.of(context).textTheme.subhead.fontSize),
               textAlign: TextAlign.center,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,

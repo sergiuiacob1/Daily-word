@@ -9,7 +9,9 @@ Widget buildSliverAppBar(String title) {
     expandedHeight: 200.0,
     pinned: true,
     flexibleSpace: new FlexibleSpaceBar(
-      title: new Text(title),
+      title: new Text(
+        title,
+      ),
     ),
   );
 }
@@ -25,9 +27,10 @@ Widget buildFutureContent(Future<Widget> content) {
         case ConnectionState.waiting:
           return _sliverListPlaceholder('Waiting...');
         case ConnectionState.done:
-          if (snapshot.hasError){
+          if (snapshot.hasError) {
             print(snapshot.error);
-            return _sliverListPlaceholder('Error: ${snapshot.error}');}
+            return _sliverListPlaceholder('Error: ${snapshot.error}');
+          }
           return snapshot.data;
       }
       return null; // unreachable

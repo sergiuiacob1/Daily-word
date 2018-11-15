@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
+import 'word.dart';
 
 class WordsFeedStorage {
   Future<String> get _localPath async {
@@ -16,20 +17,35 @@ class WordsFeedStorage {
     return File('$path/words_feed.txt');
   }
 
-  Future<String> readFile() async {
+  Future<dynamic> readFile() async {
+    dynamic _jsonObject;
+
     try {
       final file = await _localFile;
-
       String content = await file.readAsString();
-      return content;
+      _jsonObject = json.decode(content);
+      return _jsonObject;
     } catch (e) {
       return '';
     }
   }
 
-  Future<File> writeFile(String text) async {
+  Future<void> writeFile(Word word) async {
+    dynamic _allWordsJson;
     final file = await _localFile;
-    return file.writeAsString('$text\r\n', mode: FileMode.append);
+    String content = await file.readAsString();
+
+    _allWordsJson = json.decode('{words:[]}');
+    _combineJsonObjects(_allWordsJson, word);
+    print ('Acum scriu: ');
+    print (_allWordsJson);
+
+    return file.writeAsString(_allWordsJson.toString(), mode: FileMode.write);
+  }
+
+  void _combineJsonObjects(dynamic _bigJsonObject, Word word) {
+    int _count = (_bigJsonObject['words'] as List).length;
+    _bigJsonObject['words'][_count] = word.toJson();
   }
 
   Future<File> cleanFile() async {
