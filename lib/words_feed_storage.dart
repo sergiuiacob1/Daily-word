@@ -16,6 +16,15 @@ class WordsFeedStorage {
     return File('$path/words_feed.txt');
   }
 
+  Future<List<Word>> getWordsFromStorage() async {
+    List<Word> _words = [];
+    var _json = await readFile();
+    for (var _word in _json['words']) {
+      _words.add(new Word.fromJson(_word));
+    }
+    return _words;
+  }
+
   Future<dynamic> readFile() async {
     dynamic _jsonObject;
 
@@ -34,8 +43,8 @@ class WordsFeedStorage {
     var _allWordsJson = await readFile();
 
     _allWordsJson['words'].add(word.toJson());
-    print (_allWordsJson.toString());
-    file.writeAsString(json.encode(_allWordsJson).toString(), mode: FileMode.write);
+    print(_allWordsJson.toString());
+    file.writeAsString(json.encode(_allWordsJson), mode: FileMode.write);
   }
 
   Future<File> cleanFile() async {

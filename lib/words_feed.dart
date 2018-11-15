@@ -74,28 +74,19 @@ class _WordsFeedState extends State<WordsFeed> {
 
   Future<List<Widget>> _buildWords() async {
     List<Widget> _widgets = [];
-    List <Word> _words;
-    _widgets.add(
-      _buildWordWidget(
-        new Word(
-          language: languages['English'],
-          name: 'Head',
-          definition:
-              'Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!Superior body part. Metal head. Pies are great!',
-          isFavorite: false,
-        ),
-      ),
-    );
-    _widgets.add(
-      _buildWordWidget(
-        new Word(
+    List<Word> _words = await widget.wordsFeedStorage.getWordsFromStorage();
+    widget.wordsFeedStorage.writeFile(
+      new Word(
           language: languages['Romanian'],
-          name: 'Masina',
-          definition: 'Vehicul motorizat',
-          isFavorite: true,
-        ),
-      ),
+          name: 'Cuvant',
+          definition: 'O iubesc pe Andreea',
+          isFavorite: true),
     );
+    for (Word _word in _words) {
+      _widgets.add(
+        _buildWordWidget(_word),
+      );
+    }
     return _widgets;
   }
 
