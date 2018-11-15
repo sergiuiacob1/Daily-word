@@ -19,7 +19,7 @@ class WordNotifier {
   }
 
   Future scheduleNotification() async {
-    var time = new Time(19, 9, 15);
+    var time = new Time(19, 0, 15);
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         '1',
         'DailyWord',
