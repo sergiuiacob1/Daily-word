@@ -23,7 +23,7 @@ class Word {
         'isFavorite': isFavorite == true ? 'true' : 'false',
       };
   Word.fromJson(Map<String, dynamic> json)
-      : language = Languages[json['language']],
+      : language = languages[json['language']],
         name = json['name'],
         definition = json['definition'],
         isFavorite = json['isFavorite'] == 'true' ? true : false;

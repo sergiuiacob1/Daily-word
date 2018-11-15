@@ -12,8 +12,7 @@ class WordsFeedStorage {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    print('Path-ul este: ');
-    print(path);
+    // print(path);
     return File('$path/words_feed.txt');
   }
 
@@ -31,21 +30,12 @@ class WordsFeedStorage {
   }
 
   Future<void> writeFile(Word word) async {
-    dynamic _allWordsJson;
     final file = await _localFile;
-    String content = await file.readAsString();
+    var _allWordsJson = await readFile();
 
-    _allWordsJson = json.decode('{words:[]}');
-    _combineJsonObjects(_allWordsJson, word);
-    print ('Acum scriu: ');
-    print (_allWordsJson);
-
-    return file.writeAsString(_allWordsJson.toString(), mode: FileMode.write);
-  }
-
-  void _combineJsonObjects(dynamic _bigJsonObject, Word word) {
-    int _count = (_bigJsonObject['words'] as List).length;
-    _bigJsonObject['words'][_count] = word.toJson();
+    _allWordsJson['words'].add(word.toJson());
+    print (_allWordsJson.toString());
+    file.writeAsString(json.encode(_allWordsJson).toString(), mode: FileMode.write);
   }
 
   Future<File> cleanFile() async {

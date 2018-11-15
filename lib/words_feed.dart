@@ -73,11 +73,9 @@ class _WordsFeedState extends State<WordsFeed> {
   }
 
   Future<List<Widget>> _buildWords() async {
-    List<Widget> _words = [];
-    // Word _word = new Word (language: languages['Romanian'], name: 'Masina', definition: 'Vehicul Motorizat', isFavorite: false);
-    // String rez = await wordsFeedStorage.readFile();
-    
-    _words.add(
+    List<Widget> _widgets = [];
+    List <Word> _words;
+    _widgets.add(
       _buildWordWidget(
         new Word(
           language: languages['English'],
@@ -88,7 +86,7 @@ class _WordsFeedState extends State<WordsFeed> {
         ),
       ),
     );
-    _words.add(
+    _widgets.add(
       _buildWordWidget(
         new Word(
           language: languages['Romanian'],
@@ -98,7 +96,7 @@ class _WordsFeedState extends State<WordsFeed> {
         ),
       ),
     );
-    return _words;
+    return _widgets;
   }
 
   Widget _buildWordWidget(Word word) {
