@@ -1,20 +1,12 @@
-import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'dart:convert';
 import 'word.dart';
 import 'language.dart';
+import 'dex_online_api.dart';
 
 class Api {
   static Future<List<Word>> getDailyWords() async {
     List<Word> _words = [];
-    _words.add(
-      new Word(
-          definition: 'sal',
-          name: 'Nume',
-          language: languages['Romanian'],
-          isFavorite: false),
-    );
-
+    _words.add(await DexOnlineApi.getDailyWord());
     return _words;
   }
 }
