@@ -75,13 +75,6 @@ class _WordsFeedState extends State<WordsFeed> {
   Future<List<Widget>> _buildWords() async {
     List<Widget> _widgets = [];
     List<Word> _words = await widget.wordsFeedStorage.getWordsFromStorage();
-    widget.wordsFeedStorage.writeFile(
-      new Word(
-          language: languages['Romanian'],
-          name: 'Cuvant',
-          definition: 'O iubesc pe Andreea',
-          isFavorite: true),
-    );
     for (Word _word in _words) {
       _widgets.add(
         _buildWordWidget(_word),

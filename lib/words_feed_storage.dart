@@ -42,7 +42,7 @@ class WordsFeedStorage {
     final file = await _localFile;
     var _allWordsJson = await readFile();
 
-    _allWordsJson['words'].add(word.toJson());
+    _allWordsJson['words'].insert(0, word.toJson());
     print(_allWordsJson.toString());
     file.writeAsString(json.encode(_allWordsJson), mode: FileMode.write);
   }
