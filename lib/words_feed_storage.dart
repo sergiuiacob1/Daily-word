@@ -18,6 +18,8 @@ class WordsFeedStorage {
   Future<List<Word>> getWordsFromStorage() async {
     List<Word> _words = [];
     var _json = await readFile();
+    if (_json['words'].length == 0)
+      return [];
     for (var _word in _json['words']) {
       _words.add(new Word.fromJson(_word));
     }
@@ -34,7 +36,7 @@ class WordsFeedStorage {
       _jsonObject = json.decode(content);
       return _jsonObject;
     } catch (e) {
-      return '{"words": []}';
+      return json.decode('{"words": []}');
     }
   }
 
