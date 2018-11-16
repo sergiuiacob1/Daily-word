@@ -3,17 +3,8 @@ import 'app_page.dart' as PageUtils;
 
 class Dictionary extends StatefulWidget {
   final String title = "Dictionary";
-  final PageUtils.DoubleHolder scrollOffset = new PageUtils.DoubleHolder();
 
-  Dictionary({Key key}) : super(key: key);
-
-  double getScrollOffset() {
-    return scrollOffset.value;
-  }
-
-  void setScrollOffset(double aux) {
-    scrollOffset.value = aux;
-  }
+  Dictionary() : super(key: PageStorageKey("Dictionary"));
 
   @override
   State<StatefulWidget> createState() {
@@ -23,7 +14,6 @@ class Dictionary extends StatefulWidget {
 
 class _DictionaryState extends State<Dictionary> {
   Future<Widget> content;
-  ScrollController _scrollController;
 
   @override
   void initState() {
@@ -35,24 +25,13 @@ class _DictionaryState extends State<Dictionary> {
   @override
   Widget build(BuildContext context) {
     print('Build: ${widget.title}');
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollController
-        .jumpTo(widget.getScrollOffset())); //after build is done
-    _scrollController =
-        new ScrollController(initialScrollOffset: widget.getScrollOffset());
-    return new NotificationListener(
-      child: new CustomScrollView(
-        controller: _scrollController,
-        scrollDirection: Axis.vertical,
-        slivers: <Widget>[
-          PageUtils.buildSliverAppBar(widget.title),
-          PageUtils.buildFutureContent(content),
-        ],
-      ),
-      onNotification: (notification) {
-        if (notification is ScrollNotification) {
-          widget.setScrollOffset(notification.metrics.pixels);
-        }
-      },
+    return new CustomScrollView(
+      key: PageStorageKey("Dictionary"),
+      scrollDirection: Axis.vertical,
+      slivers: <Widget>[
+        PageUtils.buildSliverAppBar(widget.title),
+        PageUtils.buildFutureContent(content),
+      ],
     );
   }
 

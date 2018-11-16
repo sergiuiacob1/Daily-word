@@ -30,10 +30,11 @@ class WordsFeedStorage {
     try {
       final file = await _localFile;
       String content = await file.readAsString();
+      if (content == '') content = '{"words": []}';
       _jsonObject = json.decode(content);
       return _jsonObject;
     } catch (e) {
-      return '';
+      return '{"words": []}';
     }
   }
 
