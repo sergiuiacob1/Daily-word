@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'app_page.dart' as PageUtils;
 import 'words_feed_storage.dart';
 import 'word.dart';
-import 'language.dart';
 
 class WordsFeed extends StatefulWidget {
   final WordsFeedStorage wordsFeedStorage = new WordsFeedStorage();
   final String title = "Words Feed";
   final PageUtils.DoubleHolder scrollOffset = new PageUtils.DoubleHolder();
 
-  WordsFeed({Key key}) : super(key: key);
+  WordsFeed({Key key}) : super(key: key) {}
 
   double getScrollOffset() {
     return scrollOffset.value;
@@ -27,15 +26,18 @@ class WordsFeed extends StatefulWidget {
 
 class _WordsFeedState extends State<WordsFeed> {
   Future<Widget> content;
+  ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    print('Creating: $widget.title');
+    print('Creating: ${widget.title}');
+    _scrollController = new ScrollController(initialScrollOffset: 150.0);
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => setState(
             () {
-              content = _buildContent();
+              content =
+                  _buildContent(); // this uses context, so initState() must finish first
             },
           ),
     );
@@ -43,9 +45,7 @@ class _WordsFeedState extends State<WordsFeed> {
 
   @override
   Widget build(BuildContext context) {
-    print('Build: $widget.title');
-    ScrollController _scrollController =
-        new ScrollController(initialScrollOffset: widget.getScrollOffset());
+    print('Build: ${widget.title}');
     return new NotificationListener(
       child: new CustomScrollView(
         controller: _scrollController,
@@ -108,7 +108,6 @@ class _WordsFeedState extends State<WordsFeed> {
           ],
         ),
         subtitle: new Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Divider(),
             new Text(
