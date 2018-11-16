@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'app_page.dart' as PageUtils;
+import 'page_utils.dart' as PageUtils;
 import 'words_feed_storage.dart';
 import 'word.dart';
 import 'dex_online_api.dart';
@@ -7,17 +7,8 @@ import 'dex_online_api.dart';
 class WordsFeed extends StatefulWidget {
   final WordsFeedStorage wordsFeedStorage = new WordsFeedStorage();
   final String title = "Words Feed";
-  final PageUtils.DoubleHolder scrollOffset = new PageUtils.DoubleHolder();
 
   WordsFeed({Key key}) : super(key: key);
-
-  double getScrollOffset() {
-    return scrollOffset.value;
-  }
-
-  void setScrollOffset(double aux) {
-    scrollOffset.value = aux;
-  }
 
   @override
   State<StatefulWidget> createState() {
@@ -33,7 +24,6 @@ class _WordsFeedState extends State<WordsFeed> {
   void initState() {
     super.initState();
     print('Creating: ${widget.title}');
-    _scrollController = new ScrollController(initialScrollOffset: 200.0);
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => setState(
             () {
@@ -47,20 +37,13 @@ class _WordsFeedState extends State<WordsFeed> {
   @override
   Widget build(BuildContext context) {
     print('Build: ${widget.title}');
-    return new NotificationListener(
-      child: new CustomScrollView(
-        controller: _scrollController,
-        scrollDirection: Axis.vertical,
-        slivers: <Widget>[
-          PageUtils.buildSliverAppBar(widget.title),
-          PageUtils.buildFutureContent(content),
-        ],
-      ),
-      onNotification: (notification) {
-        if (notification is ScrollNotification) {
-          widget.setScrollOffset(notification.metrics.pixels);
-        }
-      },
+    return new CustomScrollView(
+      controller: _scrollController,
+      scrollDirection: Axis.vertical,
+      slivers: <Widget>[
+        PageUtils.buildSliverAppBar(widget.title),
+        PageUtils.buildFutureContent(content),
+      ],
     );
   }
 

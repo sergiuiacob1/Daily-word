@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'app_page.dart' as PageUtils;
+import 'page_utils.dart' as PageUtils;
 
 class Dictionary extends StatefulWidget {
   final String title = "Dictionary";

@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'dart:convert';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart';
 import 'word.dart';
@@ -25,7 +24,7 @@ class DexOnlineApi {
 
   static Future<String> getWordDefinition(String _word) async {
     Element _definition;
-    final response = await http.get('http://dex.ro/${_word}');
+    final response = await http.get('http://dex.ro/$_word');
     if (response.statusCode != 200) {
       return 'Nu s-a putut afla definitia.';
     }

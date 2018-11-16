@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-class DoubleHolder {
-  double value = 0.0;
-}
-
 Widget buildSliverAppBar(String title) {
   return new SliverAppBar(
     expandedHeight: 200.0,
