@@ -46,7 +46,6 @@ class _WordsFeedState extends State<WordsFeed> {
 
   @override
   Widget build(BuildContext context) {
-    // DexOnlineApi.getDailyWord();
     print('Build: ${widget.title}');
     return new NotificationListener(
       child: new CustomScrollView(
@@ -77,6 +76,7 @@ class _WordsFeedState extends State<WordsFeed> {
   Future<List<Widget>> _buildWords() async {
     List<Widget> _widgets = [];
     List<Word> _words = await widget.wordsFeedStorage.getWordsFromStorage();
+    _widgets.add(_buildWordWidget(await DexOnlineApi.getDailyWord()));
     for (Word _word in _words) {
       _widgets.add(
         _buildWordWidget(_word),

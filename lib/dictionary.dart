@@ -13,7 +13,7 @@ class Dictionary extends StatefulWidget {
 }
 
 class _DictionaryState extends State<Dictionary> {
-  Future<Widget> content;
+  Widget content;
 
   @override
   void initState() {
@@ -30,12 +30,12 @@ class _DictionaryState extends State<Dictionary> {
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
         PageUtils.buildSliverAppBar(widget.title),
-        PageUtils.buildFutureContent(content),
+        content,
       ],
     );
   }
 
-  Future<Widget> _buildContent() async {
+  Widget _buildContent() {
     return new SliverList(
       delegate: new SliverChildListDelegate(
         buildTextViews(50),
