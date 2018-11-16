@@ -12,14 +12,18 @@ class WordsFeedStorage {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    return File('$path/words_feed.txt');
+    File _file = new File('$path/words_feed.txt');
+    if (!_file.existsSync()) {
+      _file.createSync();
+      _file.writeAsString('{"words": [] }', mode: FileMode.write);
+    }
+    return _file;
   }
 
   Future<List<Word>> getWordsFromStorage() async {
     List<Word> _words = [];
     var _json = await readFile();
-    if (_json['words'].length == 0)
-      return [];
+    if (_json['words'].length == 0) return [];
     for (var _word in _json['words']) {
       _words.add(new Word.fromJson(_word));
     }
