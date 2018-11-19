@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'page_utils.dart' as pageUtils;
+import 'page_utils.dart' as PageUtils;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'language.dart';
 
 class Settings extends StatefulWidget {
   final String title = "Settings";
@@ -13,13 +15,22 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  Future<Widget> content;
+  SharedPreferences pref;
+  List<String> selectedLanguages;
 
   @override
   void initState() {
     super.initState();
-    content = _buildContent();
+    selectedLanguages = [];
+    _buildSelectedLanguages();
     print('Creating: $widget.title');
+  }
+
+  void _buildSelectedLanguages() async {
+    pref = await SharedPreferences.getInstance();
+    setState(() {
+      selectedLanguages = pref.getStringList("SelectedLanguages") ?? [];
+    });
   }
 
   @override
@@ -28,29 +39,50 @@ class _SettingsState extends State<Settings> {
     return new CustomScrollView(
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
-        pageUtils.buildSliverAppBar(widget.title),
-        pageUtils.buildFutureContent(content),
+        PageUtils.buildSliverAppBar(widget.title),
+        _buildContent(),
       ],
     );
   }
 
-  Future<Widget> _buildContent() async {
+  Widget _buildContent() {
     return new SliverList(
       delegate: new SliverChildListDelegate(
-        buildTextViews(50),
+        <Widget>[
+          _buildLanguageSelector(),
+        ],
       ),
     );
   }
 
-  static List<Widget> buildTextViews(int count) {
-    List<Widget> strings = List();
-    for (int i = 0; i < count; i++) {
-      strings.add(new Center(
-          child: new Padding(
-              padding: new EdgeInsets.all(16.0),
-              child: new Text("Item number settings " + i.toString(),
-                  style: new TextStyle(fontSize: 20.0)))));
+  Widget _buildLanguageSelector() {
+    return ExpansionTile(
+      title: new Text("Language select"),
+      children: languages.values
+          .map((language) => CheckboxListTile(
+                title: Text(language.name),
+                value: _isLanguageSelected(language.name),
+                onChanged: (value) => _languageCheck(language.name, value),
+              ))
+          .toList(),
+    );
+  }
+
+  void _languageCheck(String languageName, bool value) async {
+    print('Press $languageName: $value');
+    if (value)
+      selectedLanguages.add(languageName);
+    else
+      selectedLanguages.remove(languageName);
+
+    if (pref != null) {
+      await pref.setStringList("SelectedLanguages", selectedLanguages);
+      setState(() {});
     }
-    return strings;
+  }
+
+  bool _isLanguageSelected(String _languageName) {
+    print('Vector: $selectedLanguages');
+    return selectedLanguages.contains(_languageName);
   }
 }

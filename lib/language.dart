@@ -5,6 +5,8 @@ final Map<String, Language> languages = {
       name: 'Romanian', color: Colors.blueAccent, icon: Icons.language),
   'English': new Language(
       name: 'English', color: Colors.pinkAccent, icon: Icons.language),
+  'Italian': new Language(
+      name: 'Italian', color: Colors.yellowAccent, icon: Icons.language),
 };
 
 class Language {

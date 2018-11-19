@@ -5,8 +5,8 @@ import 'package:html/dom.dart';
 import 'word.dart';
 import 'language.dart';
 
-class DexOnlineApi {
-  DexOnlineApi();
+class RomanianDictionaryApi {
+  RomanianDictionaryApi();
 
   static Future<Word> getDailyWord() async {
     final response = await http.get('https://dexonline.ro/cuvantul-zilei');
@@ -18,15 +18,16 @@ class DexOnlineApi {
     return Word(
         language: languages['Romanian'],
         name: _wordName,
-        definition: await getWordDefinition(_wordName),
+        definitions: await getWordDefinition(_wordName),
         isFavorite: false);
   }
 
-  static Future<String> getWordDefinition(String _word) async {
+  static Future<Map<String, List<String>>> getWordDefinition(
+      String _word) async {
     Element _definition;
     final response = await http.get('http://dex.ro/$_word');
     if (response.statusCode != 200) {
-      return 'Nu s-a putut afla definitia.';
+      return {};
     }
 
     _definition = parse(response.body)
@@ -36,7 +37,7 @@ class DexOnlineApi {
     return _parseResponse(_definition.innerHtml);
   }
 
-  static String _parseResponse(String _html) {
+  static Map<String, List<String>> _parseResponse(String _html) {
     String _rez = '';
     var i, j;
     for (i = 0; i < _html.length; ++i) {
@@ -47,6 +48,8 @@ class DexOnlineApi {
         i = j;
       }
     }
-    return _rez;
+    return {
+      "noun": [_rez]
+    };
   }
 }

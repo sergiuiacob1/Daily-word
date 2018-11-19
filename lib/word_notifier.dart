@@ -29,7 +29,7 @@ class WordNotifier {
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
     List<Word> _words = await Api.getDailyWords();
-    await flutterLocalNotificationsPlugin.showDailyAtTime(0, _words[0].name,
-        _words[0].definition, time, platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.showDailyAtTime(
+        0, _words[0].name, 'Check it out!', time, platformChannelSpecifics);
   }
 }

@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'page_utils.dart' as PageUtils;
 import 'words_feed_storage.dart';
 import 'word.dart';
-import 'dex_online_api.dart';
+import 'api.dart';
+import 'romanian_dictionary_api.dart';
+import 'english_dictionary_api.dart';
 
 class WordsFeed extends StatefulWidget {
   final WordsFeedStorage wordsFeedStorage = new WordsFeedStorage();
   final String title = "Words Feed";
 
-  WordsFeed({Key key}) : super(key: key);
+  WordsFeed() : super(key: PageStorageKey("WordsFeed"));
 
   @override
   State<StatefulWidget> createState() {
@@ -58,8 +60,10 @@ class _WordsFeedState extends State<WordsFeed> {
 
   Future<List<Widget>> _buildWords() async {
     List<Widget> _widgets = [];
-    List<Word> _words = await widget.wordsFeedStorage.getWordsFromStorage();
-    _widgets.add(_buildWordWidget(await DexOnlineApi.getDailyWord()));
+    List<Word> _words = [];
+    // List<Word> _words = await Api.getDailyWords();
+    // List<Word> _words = await widget.wordsFeedStorage.getWordsFromStorage();
+    _widgets.add(_buildWordWidget(await EnglishDictionaryApi.getDailyWord()));
     for (Word _word in _words) {
       _widgets.add(
         _buildWordWidget(_word),
@@ -71,7 +75,7 @@ class _WordsFeedState extends State<WordsFeed> {
   Widget _buildWordWidget(Word word) {
     return new Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 7.5,
+      height: MediaQuery.of(context).size.height / 5,
       decoration: new BoxDecoration(
         border: new Border.all(color: Theme.of(context).primaryColor),
         borderRadius: BorderRadius.all(
@@ -89,19 +93,24 @@ class _WordsFeedState extends State<WordsFeed> {
               style: TextStyle(
                   fontSize: Theme.of(context).textTheme.headline.fontSize),
             ),
-            new Icon(Icons.favorite),
+            IconButton(
+              icon: new Icon(
+                  word.isFavorite ? Icons.favorite : Icons.favorite_border),
+              tooltip: 'Add to favorites',
+              onPressed: null,
+            )
           ],
         ),
         subtitle: new Column(
           children: <Widget>[
             new Divider(),
             new Text(
-              word.definition,
+              'No Definition',
               style: TextStyle(
                   fontSize: Theme.of(context).textTheme.subhead.fontSize),
               textAlign: TextAlign.center,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
+              // maxLines: 3,
+              // overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
