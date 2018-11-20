@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'page_utils.dart' as PageUtils;
 import '../blocs/dictionary_bloc.dart';
 import '../providers/dictionary_provider.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class DictionaryUI extends StatelessWidget {
   final title = "Dictionary";
@@ -14,24 +15,42 @@ class DictionaryUI extends StatelessWidget {
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
         _buildSliverAppBar(),
-        // _buildSearchBar(dictionaryBloc),
         _buildContent(dictionaryBloc),
         // content,
-        SliverFillRemaining(
-          child: Container(
-            color: Colors.redAccent,
-          ),
-        ),
       ],
     );
   }
 
   Widget _buildContent(DictionaryBloc dictionaryBloc) {
-    List<Widget> _children = [];
-    _children.add(_buildSearchBar(dictionaryBloc));
-    return SliverList(
-      delegate: SliverChildListDelegate(_children),
+    return SliverStickyHeader(
+      header: _buildSearchBar(dictionaryBloc),
+      sliver: _buildSearchResults(dictionaryBloc),
     );
+  }
+
+  Widget _buildSearchResults(DictionaryBloc dictionaryBloc) {
+    return StreamBuilder(
+        stream: dictionaryBloc.results,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return SliverFillRemaining(
+              child: Container(
+                color: Colors.yellow[100],
+              ),
+            );
+
+          return SliverList(
+            delegate: new SliverChildBuilderDelegate(
+              (context, i) => new ListTile(
+                    leading: new CircleAvatar(
+                      child: new Text('A'),
+                    ),
+                    title: new Text(snapshot.data[0].name),
+                  ),
+              childCount: snapshot.data.length,
+            ),
+          );
+        });
   }
 
   Widget _buildSearchBar(DictionaryBloc dictionaryBloc) {
