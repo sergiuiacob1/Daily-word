@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'providers/dictionary_provider.dart';
 
 class App extends StatelessWidget {
   App();
@@ -7,7 +8,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Center(child: Text('Daily Word')),
+        body: DictionaryProvider(),
       ),
     );
   }
