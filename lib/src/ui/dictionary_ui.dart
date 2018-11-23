@@ -6,7 +6,6 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class DictionaryUI extends StatelessWidget {
   final title = "Dictionary";
-  final Widget content = null;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,6 @@ class DictionaryUI extends StatelessWidget {
       slivers: <Widget>[
         _buildSliverAppBar(),
         _buildContent(dictionaryBloc),
-        // content,
       ],
     );
   }
