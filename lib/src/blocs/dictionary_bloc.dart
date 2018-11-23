@@ -8,7 +8,8 @@ class DictionaryBloc {
   Stream<List<Word>> _results = Stream.empty();
 
   DictionaryBloc() {
-    _results = _query.distinct().switchMap(api.getWords).asBroadcastStream();
+    _results = api.wordsObservable;
+    _query.distinct().listen(api.handleSearch);
   }
 
   void dispose() {
