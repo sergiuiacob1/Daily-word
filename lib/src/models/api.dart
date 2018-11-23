@@ -9,18 +9,18 @@ import 'package:rxdart/rxdart.dart';
 
 class Api {
   // Map<String, StreamController<List<Word>>> _streams;
-  List<PublishSubject<List<Word>>> _observables;
+  Map<String, PublishSubject<List<Word>>> _observables;
   Observable<List<Word>> _wordsObservable;
 
   Api() {
     // _buildStreams();
     _buildObservables();
-    _wordsObservable = Observable.merge(_observables)
+    _wordsObservable = Observable.merge(_observables.values)
         .scan((accumulator, list, i) => accumulator..addAll(list), []);
   }
 
   void dispose() {
-    for (var _item in _observables) _item.close();
+    for (var _item in _observables.values) _item.close();
   }
 
   /// Each language will have a different StreamController, corresponding to a different api
@@ -31,25 +31,23 @@ class Api {
 
   /// Each language has an Observable that uses its own stream
   void _buildObservables() {
-    _observables = [];
+    _observables = {};
     for (String lang in languages.keys)
-      _observables.add(
-        _buildObservableForLanguage(lang),
-      );
+      _observables[lang] = _buildObservableForLanguage(lang);
   }
 
   PublishSubject<List<Word>> _buildObservableForLanguage(String lang) {
     return PublishSubject<List<Word>>();
   }
 
-  void handleSearch(String query) async {
+  void searchForWord(String query) async {
     // _wordsObservable.drain();
     _addWordsToStreams(query);
   }
 
   void _addWordsToStreams(String query) async {
     if (query == '') return;
-    _observables[0].add(
+    _observables['English'].add(
       [
         Word(
           name: 'English',

@@ -9,7 +9,7 @@ class DictionaryBloc {
 
   DictionaryBloc() {
     _results = api.wordsObservable;
-    _query.distinct().listen(api.handleSearch);
+    _query.distinct().listen(api.searchForWord);
   }
 
   void dispose() {
