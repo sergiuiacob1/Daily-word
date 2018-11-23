@@ -10,12 +10,17 @@ import 'package:rxdart/rxdart.dart';
 class Api {
   Map<String, PublishSubject> _observables;
   Observable _wordsObservable;
+  List<Word> _myAccumulator = [];
 
   Api() {
     _buildObservables();
     _wordsObservable = Observable.merge(_observables.values).scan(
-        (accumulator, list, i) => accumulator..addAll(list),
+        (accumulator, list, i) => _mergeData(list),
         []).asBroadcastStream();
+  }
+
+  dynamic _mergeData(dynamic list) {
+    return _myAccumulator..addAll(list);
   }
 
   void dispose() {
@@ -34,7 +39,7 @@ class Api {
   }
 
   Future<void> searchForWord(String query) async {
-    // _wordsObservable.drain();
+    _myAccumulator = [];
     await _addWordsToStreams(query);
   }
 
