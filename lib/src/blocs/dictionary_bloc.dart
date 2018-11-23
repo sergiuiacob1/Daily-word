@@ -1,19 +1,23 @@
 import 'package:rxdart/rxdart.dart';
 import '../models/word.dart';
 import '../models/api.dart';
+import 'dart:async';
 
 class DictionaryBloc {
   final Api api = Api();
   ReplaySubject<String> _query = ReplaySubject<String>();
-  Stream<List<Word>> _results = Stream.empty();
+  StreamController<List<Word>> _results = StreamController();
 
   DictionaryBloc() {
-    _results = api.wordsStream;
+    api.wordsStream.listen((onData) {
+      _results.sink.add(onData);
+    });
     _query.distinct().listen(api.searchForWord);
   }
 
   void dispose() {
     _query.close();
+    _results.close();
   }
 
   void handleSearch(String query) {
@@ -21,5 +25,5 @@ class DictionaryBloc {
     _query.sink.add(query);
   }
 
-  Stream<List<Word>> get results => _results;
+  Stream<List<Word>> get results => _results.stream;
 }

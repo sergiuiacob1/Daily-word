@@ -14,9 +14,9 @@ class Api {
   Api() {
     _buildObservables();
     _wordsObservable = Observable.merge(_observables.values)
-        .scan((accumulator, list, i) => accumulator..addAll(list), [])
-        .asBroadcastStream()
-        .cast<List<Word>>();
+        .scan((accumulator, list, i) => accumulator..addAll(list), []);
+        // .asBroadcastStream()
+        // .cast<List<Word>>();
   }
 
   void dispose() {
