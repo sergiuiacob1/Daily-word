@@ -43,7 +43,7 @@ class DictionaryUI extends StatelessWidget {
                     leading: new CircleAvatar(
                       child: new Text('A'),
                     ),
-                    title: new Text(snapshot.data[0].name),
+                    title: new Text(snapshot.data[i].name),
                   ),
               childCount: snapshot.data.length,
             ),

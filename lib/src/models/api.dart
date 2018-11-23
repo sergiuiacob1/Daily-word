@@ -8,15 +8,14 @@ import 'dart:convert';
 import 'package:rxdart/rxdart.dart';
 
 class Api {
-  Map<String, PublishSubject<List<Word>>> _observables;
-  Observable<List<Word>> _wordsObservable;
+  Map<String, PublishSubject> _observables;
+  Observable _wordsObservable;
 
   Api() {
     _buildObservables();
-    _wordsObservable = Observable.merge(_observables.values)
-        .scan((accumulator, list, i) => accumulator..addAll(list), []);
-        // .asBroadcastStream()
-        // .cast<List<Word>>();
+    _wordsObservable = Observable.merge(_observables.values).scan(
+        (accumulator, list, i) => accumulator..addAll(list),
+        []).asBroadcastStream();
   }
 
   void dispose() {
@@ -30,16 +29,21 @@ class Api {
       _observables[lang] = _buildObservableForLanguage(lang);
   }
 
-  PublishSubject<List<Word>> _buildObservableForLanguage(String lang) {
-    return PublishSubject<List<Word>>();
+  PublishSubject _buildObservableForLanguage(String lang) {
+    return PublishSubject();
   }
 
   Future<void> searchForWord(String query) async {
     // _wordsObservable.drain();
-    _addWordsToStreams(query);
+    await _addWordsToStreams(query);
   }
 
   Future<void> _addWordsToStreams(String query) async {
+    _addRomanianWords(query);
+    _addEnglishWords(query);
+  }
+
+  Future<void> _addEnglishWords(String query) async {
     if (query == '') return;
     _observables['English'].add(
       [
@@ -53,6 +57,21 @@ class Api {
     );
   }
 
+  Future<void> _addRomanianWords(String query) async {
+    if (query == '') return;
+    await Future.delayed(Duration(milliseconds: 500));
+    _observables['Romanian'].add(
+      [
+        Word(
+          name: 'Romanian',
+          definitions: {},
+          isFavorite: false,
+          language: languages['Romanian'],
+        ),
+      ],
+    );
+  }
+
   bool languageIsActive(String lang) {
     // hardcoded for the moment
     if (lang == 'English' || lang == 'Romanian') return true;
@@ -61,8 +80,5 @@ class Api {
 
   /// This will return an Observable with the words from all of the languages
   /// It merges the Observables (one for each language) into one
-  Observable<List<Word>> get wordsStream {
-    print('GET words observable');
-    return _wordsObservable;
-  }
+  Observable get wordsStream => _wordsObservable;
 }

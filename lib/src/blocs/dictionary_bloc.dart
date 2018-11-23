@@ -6,24 +6,19 @@ import 'dart:async';
 class DictionaryBloc {
   final Api api = Api();
   ReplaySubject<String> _query = ReplaySubject<String>();
-  StreamController<List<Word>> _results = StreamController();
-
+  Stream _results = Stream.empty();
   DictionaryBloc() {
-    api.wordsStream.listen((onData) {
-      _results.sink.add(onData);
-    });
+    _results = api.wordsStream;
     _query.distinct().listen(api.searchForWord);
   }
 
   void dispose() {
     _query.close();
-    _results.close();
   }
 
-  void handleSearch(String query) {
-    print('Searching: $query');
+  void handleSearch(String query) async {
     _query.sink.add(query);
   }
 
-  Stream<List<Word>> get results => _results.stream;
+  Stream<dynamic> get results => _results;
 }
