@@ -8,7 +8,7 @@ class DictionaryBloc {
   Stream<List<Word>> _results = Stream.empty();
 
   DictionaryBloc() {
-    _results = api.wordsObservable;
+    _results = api.wordsStream;
     _query.distinct().listen(api.searchForWord);
   }
 
