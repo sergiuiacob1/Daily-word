@@ -2,59 +2,46 @@ import 'package:flutter/material.dart';
 import './../models/word.dart';
 import './../models/language.dart';
 
-  Widget buildWordWidget(BuildContext context, Word word) {
-    return new Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 5,
-      decoration: new BoxDecoration(
-        border: new Border.all(color: Theme.of(context).primaryColor),
-        borderRadius: BorderRadius.all(
-          Radius.elliptical(16.0, 16.0),
-        ),
+Widget buildWordWidget(BuildContext context, Word word) {
+  return Container(
+    width: MediaQuery.of(context).size.width,
+    height: MediaQuery.of(context).size.height / 10,
+    margin: EdgeInsets.all(8.0),
+    child: ListTile(
+      leading: Image(
+        image: word.language.icon,
+        width: 64.0,
+        height: 64.0,
       ),
-      margin: EdgeInsets.all(8.0),
-      child: new ListTile(
-        leading: Icon(word.language.icon),
-        title: new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            new Icon(Icons.language),
-            new Text(
-              word.name,
-              style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.headline.fontSize),
-            ),
-            IconButton(
-              icon: new Icon(
-                  word.isFavorite ? Icons.favorite : Icons.favorite_border),
-              tooltip: 'Add to favorites',
-              onPressed: null,
-            )
-          ],
-        ),
-        subtitle: new Column(
-          children: <Widget>[
-            new Divider(),
-            new Text(
-              'No Definition',
-              style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.subhead.fontSize),
-              textAlign: TextAlign.center,
-              // maxLines: 3,
-              // overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
+      title: Text(
+        word.name,
+        textAlign: TextAlign.center,
+        style:
+            TextStyle(fontSize: Theme.of(context).textTheme.headline.fontSize),
       ),
-    );
-  }
+      subtitle: Column(
+        children: <Widget>[
+          Divider(),
+          Text(
+            'No Definition',
+            style: TextStyle(
+                fontSize: Theme.of(context).textTheme.subhead.fontSize),
+            textAlign: TextAlign.center,
+            // maxLines: 3,
+            // overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    ),
+  );
+}
 
 Widget buildSliverAppBar(String title) {
-  return new SliverAppBar(
+  return SliverAppBar(
     expandedHeight: 200.0,
     pinned: true,
-    flexibleSpace: new FlexibleSpaceBar(
-      title: new Text(
+    flexibleSpace: FlexibleSpaceBar(
+      title: Text(
         title,
       ),
     ),
@@ -84,9 +71,9 @@ Widget buildFutureContent(Future<Widget> content) {
 }
 
 SliverList _sliverListPlaceholder(String _text) {
-  List<Widget> _list = [new Center(child: new Text(_text))];
-  return new SliverList(
-    delegate: new SliverChildListDelegate(
+  List<Widget> _list = [Center(child: Text(_text))];
+  return SliverList(
+    delegate: SliverChildListDelegate(
       _list,
     ),
   );
