@@ -8,10 +8,14 @@ Widget buildWordWidget(BuildContext context, Word word) {
     height: MediaQuery.of(context).size.height / 10,
     margin: EdgeInsets.all(8.0),
     child: ListTile(
-      leading: Image(
-        image: word.language.icon,
-        width: 64.0,
-        height: 64.0,
+      leading: Column(
+        children: <Widget>[
+          Image(
+            image: word.language.icon,
+            width: 64.0,
+            height: 64.0,
+          ),
+        ],
       ),
       title: Text(
         word.name,
@@ -38,7 +42,7 @@ Widget buildWordWidget(BuildContext context, Word word) {
 
 Widget buildSliverAppBar(String title) {
   return SliverAppBar(
-    expandedHeight: 200.0,
+    expandedHeight: 300.0,
     pinned: true,
     flexibleSpace: FlexibleSpaceBar(
       title: Text(

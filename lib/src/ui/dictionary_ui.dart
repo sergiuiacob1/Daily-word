@@ -10,7 +10,7 @@ class DictionaryUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DictionaryBloc dictionaryBloc = DictionaryProvider.of(context);
-    return new CustomScrollView(
+    return CustomScrollView(
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
         _buildSliverAppBar(),
@@ -38,7 +38,7 @@ class DictionaryUI extends StatelessWidget {
             );
 
           return SliverList(
-            delegate: new SliverChildBuilderDelegate(
+            delegate: SliverChildBuilderDelegate(
               (context, i) {
                 if (i % 2 == 0)
                   return PageUtils.buildWordWidget(
@@ -74,10 +74,10 @@ class DictionaryUI extends StatelessWidget {
   }
 
   Widget _buildSliverAppBar() {
-    return new SliverAppBar(
+    return SliverAppBar(
       expandedHeight: 300.0,
       pinned: true,
-      flexibleSpace: new FlexibleSpaceBar(
+      flexibleSpace: FlexibleSpaceBar(
         title: Text("Dictionary"),
       ),
     );
