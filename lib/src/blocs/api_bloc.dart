@@ -24,6 +24,7 @@ class ApiBloc {
 
   /// Merge the data from different streams into a single array
   dynamic _mergeData(Word word) {
+    if (word == null) return _myAccumulator;
     return _myAccumulator..add(word);
   }
 

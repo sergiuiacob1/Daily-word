@@ -30,11 +30,7 @@ abstract class ApiBlocUtils {
   Future<void> searchForWord(String _word) async {
     if (_word == '') return;
     _webSearch = CancelableCompleter();
-    _webSearch.operation.value.then((result) {
-      if (result != null) {
-        _observable.add(result);
-      }
-    });
+    _webSearch.operation.value.then((result) => _observable.add(result));
     _webSearch.complete(_apiSearchForWord(_word));
   }
 
