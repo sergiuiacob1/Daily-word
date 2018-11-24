@@ -12,6 +12,7 @@ class WordsStorageBloc {
 
   Future<File> get _localFile async {
     final path = await _localPath;
+    print(path);
     File _file = new File('$path/words.txt');
     if (!_file.existsSync()) {
       _file.createSync();
@@ -48,8 +49,9 @@ class WordsStorageBloc {
     final file = await _localFile;
     var _allWordsJson = await readFile();
 
+    /// nu scrie ACELASI CUVANT DE 2 ORI!!!
+    /// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT
     _allWordsJson['words'].insert(0, word.toJson());
-    print(_allWordsJson.toString());
     file.writeAsString(json.encode(_allWordsJson), mode: FileMode.write);
   }
 }

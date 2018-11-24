@@ -5,7 +5,7 @@ import 'dart:convert';
 class Word {
   Language language;
   String name;
-  Map<String, List<String>> definitions;
+  Map<String, dynamic> definitions;
   bool isFavorite;
 
   Word(
