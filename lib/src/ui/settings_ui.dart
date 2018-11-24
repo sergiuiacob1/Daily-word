@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'page_utils.dart' as PageUtils;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../blocs/settings_bloc.dart';
 import '../providers/settings_provider.dart';
 import './../models/language.dart';

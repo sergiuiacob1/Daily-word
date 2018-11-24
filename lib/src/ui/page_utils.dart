@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './../models/word.dart';
-import './../models/language.dart';
 
 Widget buildWordWidget(BuildContext context, Word word) {
   return Container(

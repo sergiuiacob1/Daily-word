@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 class SettingsBloc {
-  PublishSubject languagesStreamController = PublishSubject();
+  BehaviorSubject languagesStreamController = BehaviorSubject();
   SharedPreferences _pref;
   List<String> _selectedLanguages;
 
@@ -33,8 +33,7 @@ class SettingsBloc {
     }
   }
 
-  Stream get languagesStream =>
-      languagesStreamController.stream.asBroadcastStream();
+  Stream get languagesStream => languagesStreamController.stream.asBroadcastStream();
 
   List<String> get selectedLanguages => _selectedLanguages;
 }
