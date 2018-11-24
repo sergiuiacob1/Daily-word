@@ -1,14 +1,8 @@
 import './../models/word.dart';
 import './../models/language.dart';
 import 'api_bloc_utils.dart';
-import 'package:rxdart/rxdart.dart';
-import 'dart:async';
-import 'package:async/async.dart';
-import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' show parse;
+import 'package:html/parser.dart';
 import 'package:html/dom.dart';
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 class ApiRomanianBloc extends ApiBlocUtils {
   ApiRomanianBloc()
@@ -19,19 +13,32 @@ class ApiRomanianBloc extends ApiBlocUtils {
 
   @override
   Word buildWord(String _word, String _responseBody) {
-    String _defType;
+    String _defType = '';
     List<String> _items;
     Word _rez = Word(
-      name: 'Romana override',
+      name: _word + ' - Romanian',
       definitions: {},
       language: languages['Romanian'],
       isFavorite: false,
     );
 
     final _html = parse(_responseBody);
-    List<Element> _ols = _html.getElementsByTagName("ol");
-    for (var i = 0; i < _ols.length; ++i) {
-      _items = _ols[i].innerHtml.split("<li>");
+    final _content = _html.getElementsByClassName("mw-parser-output");
+    if (_content.length == 0) return null;
+    List<Element> _children = _content[0].children;
+
+    for (Element _element in _children) {
+      if (_element.outerHtml.startsWith("<h3")) {
+        _defType = _element.text;
+      }
+      if (_element.outerHtml.startsWith("<ol")) {
+        //am definitii aici
+        for (Element _definition in _element.children) {
+          if (_rez.definitions[_defType] == null)
+            _rez.definitions[_defType] = [];
+          _rez.definitions[_defType].add(_definition.text);
+        }
+      }
     }
     return _rez;
   }
