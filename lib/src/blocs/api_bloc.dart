@@ -19,7 +19,7 @@ class ApiBloc {
 
   void _buildApiBlocHandlers() {
     _apiLanguageBlocHandlers['Romanian'] = ApiRomanianBloc();
-    _apiLanguageBlocHandlers['English'] = ApiDefaultLanguageBloc('English');
+    _apiLanguageBlocHandlers['English'] = ApiDefaultLanguageBloc(language: 'English');
   }
 
   /// Merge the data from different streams into a single array
