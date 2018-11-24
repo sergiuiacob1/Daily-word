@@ -10,12 +10,21 @@ final Map<String, Language> languages = {
 };
 
 class Language {
-  String name;
+  String name, abbreviation;
   Color color;
   IconData icon;
 
   Language({@required this.name, @required this.color, @required this.icon})
       : assert(name != null),
         assert(color != null),
-        assert(icon != null);
+        assert(icon != null) {
+    switch (name) {
+      case 'Romanian':
+        abbreviation = 'ro';
+        break;
+      case 'English':
+        abbreviation = 'en';
+        break;
+    }
+  }
 }

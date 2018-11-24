@@ -1,6 +1,6 @@
 import './../models/word.dart';
-import './api_romanian_bloc.dart';
-import './api_default_language_bloc.dart';
+import './apis/api_romanian_bloc.dart';
+import './apis/api_english_bloc.dart';
 import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
@@ -19,7 +19,7 @@ class ApiBloc {
 
   void _buildApiBlocHandlers() {
     _apiLanguageBlocHandlers['Romanian'] = ApiRomanianBloc();
-    _apiLanguageBlocHandlers['English'] = ApiDefaultLanguageBloc(language: 'English');
+    _apiLanguageBlocHandlers['English'] = ApiEnglishBloc();
   }
 
   /// Merge the data from different streams into a single array
@@ -30,8 +30,7 @@ class ApiBloc {
   /// Search for a word in each language
   Future<void> searchForWord(String query) async {
     _myAccumulator = [];
-    if (query == '') return;
-    for (var _apiBloc in _apiLanguageBlocHandlers.values){
+    for (var _apiBloc in _apiLanguageBlocHandlers.values) {
       _apiBloc.cancelExistingSearch();
       _apiBloc.searchForWord(query);
     }

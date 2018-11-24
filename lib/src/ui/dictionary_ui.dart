@@ -39,13 +39,15 @@ class DictionaryUI extends StatelessWidget {
 
           return SliverList(
             delegate: new SliverChildBuilderDelegate(
-              (context, i) => new ListTile(
-                    leading: new CircleAvatar(
-                      child: new Text('A'),
-                    ),
-                    title: new Text(snapshot.data[i].name),
-                  ),
-              childCount: snapshot.data.length,
+              (context, i) {
+                if (i % 2 == 0)
+                  return PageUtils.buildWordWidget(
+                      context, snapshot.data[i ~/ 2]);
+                return Divider(
+                  height: 32.0,
+                );
+              },
+              childCount: snapshot.data.length * 2 - 1,
             ),
           );
         });

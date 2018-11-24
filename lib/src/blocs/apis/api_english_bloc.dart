@@ -1,24 +1,25 @@
-import './../models/word.dart';
-import './../models/language.dart';
+import './../../models/word.dart';
+import './../../models/language.dart';
 import 'api_bloc_utils.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
 
-class ApiRomanianBloc extends ApiBlocUtils {
-  ApiRomanianBloc()
+class ApiEnglishBloc extends ApiBlocUtils {
+  ApiEnglishBloc()
       : super(
-          language: 'Romanian',
-          url: "https://ro.wiktionary.org/wiki/{1}?printable=yes",
+          language: 'English',
+          getDefinitionUrl:
+              "https://en.wiktionary.org/w/index.php?title={1}&printable=yes",
+          getDailyWordUrl: "",
         );
 
   @override
   Word buildWord(String _word, String _responseBody) {
     String _defType = '';
-    List<String> _items;
     Word _rez = Word(
-      name: _word + ' - Romanian',
+      name: _word + ' - ' + language,
       definitions: {},
-      language: languages['Romanian'],
+      language: languages[language],
       isFavorite: false,
     );
 
@@ -32,8 +33,8 @@ class ApiRomanianBloc extends ApiBlocUtils {
         _defType = _element.text;
       }
       if (_element.outerHtml.startsWith("<ol")) {
-        //am definitii aici
         for (Element _definition in _element.children) {
+          // process the definitions
           if (_rez.definitions[_defType] == null)
             _rez.definitions[_defType] = [];
           _rez.definitions[_defType].add(_definition.text);

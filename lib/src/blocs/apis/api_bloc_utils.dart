@@ -2,21 +2,21 @@ import 'package:rxdart/rxdart.dart';
 import 'dart:async';
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' show parse;
-import 'package:html/dom.dart';
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import './../models/word.dart';
-import './../models/language.dart';
+import './../../models/word.dart';
 
 abstract class ApiBlocUtils {
   PublishSubject _observable = PublishSubject();
-  final String language, url;
+  final String language, getDefinitionUrl, getDailyWordUrl;
   CancelableCompleter _webSearch;
 
-  ApiBlocUtils({this.language, @required this.url})
+  ApiBlocUtils(
+      {@required this.language,
+      @required this.getDefinitionUrl,
+      @required this.getDailyWordUrl})
       : assert(language != null),
-        assert(url != null);
+        assert(getDefinitionUrl != null),
+        assert(getDailyWordUrl != null);
 
   void dispose() {
     _observable.close();
@@ -28,6 +28,7 @@ abstract class ApiBlocUtils {
 
   /// Makes a new search for the query
   Future<void> searchForWord(String _word) async {
+    if (_word == '') return;
     _webSearch = CancelableCompleter();
     _webSearch.operation.value.then((result) {
       if (result != null) {
@@ -39,7 +40,7 @@ abstract class ApiBlocUtils {
 
   /// Get results from the Internet
   Future<Word> _apiSearchForWord(String _word) async {
-    final _getRequest = url.replaceFirst("{1}", _word);
+    final _getRequest = getDefinitionUrl.replaceFirst("{1}", _word);
     var response;
     try {
       response = await http.get(_getRequest);
