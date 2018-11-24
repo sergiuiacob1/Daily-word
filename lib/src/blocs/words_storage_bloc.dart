@@ -2,9 +2,26 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
+import 'package:rxdart/rxdart.dart';
 import './../models/word.dart';
 
 class WordsStorageBloc {
+  BehaviorSubject _storageWordsStream = BehaviorSubject();
+  static List<Word> _words = [];
+
+  WordsStorageBloc() {
+    _buildWords();
+  }
+
+  void _buildWords() async {
+    _words = await getWordsFromStorage();
+    _storageWordsStream.add(_words);
+  }
+
+  void dispose() {
+    _storageWordsStream.close();
+  }
+
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
@@ -12,7 +29,6 @@ class WordsStorageBloc {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    print(path);
     File _file = new File('$path/words.txt');
     if (!_file.existsSync()) {
       _file.createSync();
@@ -52,6 +68,11 @@ class WordsStorageBloc {
     /// nu scrie ACELASI CUVANT DE 2 ORI!!!
     /// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT
     _allWordsJson['words'].insert(0, word.toJson());
+    _words.insert(0, word);
+    _storageWordsStream.add(_words);
     file.writeAsString(json.encode(_allWordsJson), mode: FileMode.write);
   }
+
+  Stream get storageWordsStream => _storageWordsStream.stream;
+  static List<Word> get words => _words;
 }

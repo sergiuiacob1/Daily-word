@@ -3,6 +3,7 @@ import './../../models/language.dart';
 import 'api_bloc_utils.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
+import './../words_storage_bloc.dart';
 
 class ApiRomanianBloc extends ApiBlocUtils {
   ApiRomanianBloc()
@@ -41,6 +42,7 @@ class ApiRomanianBloc extends ApiBlocUtils {
       }
     }
 
+    WordsStorageBloc().writeFile(_rez);
     return _rez;
   }
 }
