@@ -30,7 +30,7 @@ class DictionaryUI extends StatelessWidget {
     return StreamBuilder(
         stream: dictionaryBloc.results,
         builder: (context, snapshot) {
-          if (!snapshot.hasData)
+          if (!snapshot.hasData || snapshot.data.length == 0)
             return SliverFillRemaining(
               child: Container(
                 color: Colors.yellow[100],
