@@ -35,10 +35,6 @@ class SettingsUI extends StatelessWidget {
         stream: bloc.languagesStream,
         initialData: bloc.selectedLanguages,
         builder: (context, snapshot) {
-          // if (snapshot.hasData) {
-          //   print('I got data: ${snapshot.data}');
-          // } else
-          //   print('I dont have data');
           return ExpansionTile(
             title: new Text("Language select"),
             children: languages.values
