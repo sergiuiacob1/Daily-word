@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'providers/dictionary_provider.dart';
 import 'providers/todays_words_provider.dart';
+import 'providers/favorites_provider.dart';
+import 'providers/settings_provider.dart';
 
 class App extends StatelessWidget {
   App();
@@ -43,6 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     TodaysWordsProvider(),
     DictionaryProvider(),
+    FavoritesProvider(),
+    SettingsProvider(),
   ];
 
   @override
