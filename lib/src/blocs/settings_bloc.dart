@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 class SettingsBloc {
-  BehaviorSubject languagesStreamController = BehaviorSubject();
+  BehaviorSubject languagesStreamController;
   SharedPreferences _pref;
   List<String> _selectedLanguages;
 
   SettingsBloc() {
     _selectedLanguages = [];
+    languagesStreamController = BehaviorSubject(seedValue: []);
     _buildSelectedLanguages();
   }
 
@@ -19,6 +20,7 @@ class SettingsBloc {
   void _buildSelectedLanguages() async {
     _pref = await SharedPreferences.getInstance();
     _selectedLanguages = _pref.getStringList("SelectedLanguages") ?? [];
+    languagesStreamController.add(_selectedLanguages);
   }
 
   void languageCheck(String languageName, bool value) async {
@@ -33,7 +35,5 @@ class SettingsBloc {
     }
   }
 
-  Stream get languagesStream => languagesStreamController.stream.asBroadcastStream();
-
-  List<String> get selectedLanguages => _selectedLanguages;
+  Stream get languagesStream => languagesStreamController;
 }
