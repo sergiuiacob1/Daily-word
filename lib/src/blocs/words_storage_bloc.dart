@@ -46,8 +46,8 @@ class WordsStorageBloc {
   Future<List<Word>> getWordsFromStorage() async {
     List<Word> _words = [];
     var _json = await readFile();
-    if (_json['words'].length == 0) return [];
-    for (var _word in _json['words']) {
+    if (_json.length == 0) return [];
+    for (var _word in _json) {
       _words.add(new Word.fromJson(_word));
     }
     return _words;
@@ -55,29 +55,43 @@ class WordsStorageBloc {
 
   Future<dynamic> readFile() async {
     dynamic _jsonObject;
-
     try {
       final file = await _localFile;
       String content = await file.readAsString();
-      if (content == '') content = '{"words": []}';
+      if (content == '') return [];
       _jsonObject = json.decode(content);
       return _jsonObject;
     } catch (e) {
-      return json.decode('{"words": []}');
+      return [];
     }
   }
 
-  Future<void> writeFile(Word word) async {
+  Future<void> writeFile(Word word, [bool changeFavoriteStatus = false]) async {
     final file = await _localFile;
-    var _allWordsJson = await readFile();
+    List<Word> _words = await getWordsFromStorage();
+    int _pos;
 
-    /// nu scrie ACELASI CUVANT DE 2 ORI!!!
-    /// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT/// DE SCHIMBATTTT
-    _allWordsJson['words'].insert(0, word.toJson());
-    _words.insert(0, word);
+    _pos = _words.indexWhere(
+        (item) => item.name == word.name && item.language == word.language);
+
+    if (_pos == -1) {
+      _words.insert(0, word);
+    } else {
+      if (changeFavoriteStatus == true)
+        _words[_pos].isFavorite = !(_words[_pos].isFavorite);
+    }
     _storageWordsStream.add(_words);
-    file.writeAsString(json.encode(_allWordsJson), mode: FileMode.write);
+    file.writeAsString(json.encode(_words), mode: FileMode.write);
   }
 
   BehaviorSubject get storageWordsStream => _storageWordsStream;
+
+  bool isWordFavorite(Word word) {
+    return false;
+    _words
+        .where(
+            (item) => item.name == word.name && item.language == word.language)
+        .first
+        .isFavorite;
+  }
 }

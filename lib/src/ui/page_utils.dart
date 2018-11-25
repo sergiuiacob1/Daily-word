@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './../models/word.dart';
 import '../providers/word_page_provider.dart';
+import './../blocs/words_storage_bloc.dart';
 // import 'package:tts/tts.dart';
 // import 'package:flutter_tts/flutter_tts.dart';
 
@@ -46,19 +47,25 @@ Widget buildWordWidget(BuildContext context, Word word) {
                   children: <Widget>[
                     IconButton(
                       iconSize: 32.0,
-                      icon: Icon(Icons.volume_up),
+                      icon: Icon(
+                        Icons.volume_up,
+                        color: Theme.of(context).accentColor,
+                      ),
                       onPressed: () => speakWord(word),
                     ),
                     IconButton(
                       iconSize: 32.0,
-                      icon: Icon(Icons.favorite_border),
-                      onPressed: null,
+                      icon: Icon(
+                        word.isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.redAccent,
+                      ),
+                      onPressed: () => _addWordToFavorites(word),
                     ),
                     FlatButton(
                       child: const Text('More...'),
-                      color: Theme.of(context).primaryColor,
+                      color: Theme.of(context).accentColor,
                       splashColor: word.language.color,
-                      onPressed: () => openWordPage(context, word),
+                      onPressed: () => _openWordPage(context, word),
                     ),
                   ],
                 )
@@ -71,9 +78,15 @@ Widget buildWordWidget(BuildContext context, Word word) {
   );
 }
 
-void openWordPage(BuildContext context, Word word) {
-  Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => WordPageProvider(word: word)));
+void _addWordToFavorites(Word word){
+  WordsStorageBloc _storageBloc = WordsStorageBloc();
+  word.isFavorite = true;
+  _storageBloc.writeFile(word, true);
+}
+
+void _openWordPage(BuildContext context, Word word) {
+  Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => WordPageProvider(word: word)));
 }
 
 void speakWord(Word word) async {

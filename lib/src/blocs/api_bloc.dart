@@ -40,5 +40,5 @@ class ApiBloc {
 
   /// This will return an Observable with the words from all of the languages
   /// It merges the Observables (one for each language) into one
-  Observable get wordsStream => _wordsObservable;
+  Observable get wordsStream => _wordsObservable.asBroadcastStream();
 }

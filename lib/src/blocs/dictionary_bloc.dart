@@ -1,13 +1,12 @@
 import 'package:rxdart/rxdart.dart';
 import 'api_bloc.dart';
 import 'dart:async';
+import './words_storage_bloc.dart';
 
 class DictionaryBloc {
   final ApiBloc apiBloc = ApiBloc();
   ReplaySubject<String> _query = ReplaySubject<String>();
-  Stream _results = Stream.empty();
   DictionaryBloc() {
-    _results = apiBloc.wordsStream;
     _query.distinct().listen(apiBloc.searchForWord);
   }
 
@@ -19,5 +18,5 @@ class DictionaryBloc {
     _query.sink.add(query);
   }
 
-  Stream<dynamic> get results => _results;
+  Observable get results => apiBloc.wordsStream;
 }
