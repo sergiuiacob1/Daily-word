@@ -4,19 +4,26 @@ import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import './../../models/word.dart';
+import './../settings_bloc.dart';
 
 abstract class ApiBlocUtils {
   PublishSubject _observable = PublishSubject();
+  SettingsBloc settingsBloc = SettingsBloc();
   final String language, getDefinitionUrl, getDailyWordUrl;
   CancelableCompleter _webSearch;
+  bool _languageIsSelected = true;
 
-  ApiBlocUtils(
-      {@required this.language,
-      @required this.getDefinitionUrl,
-      @required this.getDailyWordUrl})
-      : assert(language != null),
+  ApiBlocUtils({
+    @required this.language,
+    @required this.getDefinitionUrl,
+    @required this.getDailyWordUrl,
+  })  : assert(language != null),
         assert(getDefinitionUrl != null),
-        assert(getDailyWordUrl != null);
+        assert(getDailyWordUrl != null) {
+    settingsBloc.languagesStream.listen((onData) {
+      _languageIsSelected = settingsBloc.isLanguageSelected(language);
+    });
+  }
 
   void dispose() {
     _observable.close();
@@ -56,4 +63,6 @@ abstract class ApiBlocUtils {
   Word buildWord(String _word, String _responseBody);
 
   PublishSubject get observable => _observable;
+
+  bool get languageIsSelected => _languageIsSelected;
 }

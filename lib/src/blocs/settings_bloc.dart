@@ -6,8 +6,13 @@ class SettingsBloc {
   BehaviorSubject languagesStreamController;
   SharedPreferences _pref;
   List<String> _selectedLanguages;
+  static final SettingsBloc _singleton = SettingsBloc._internal();
 
-  SettingsBloc() {
+  factory SettingsBloc() {
+    return _singleton;
+  }
+
+  SettingsBloc._internal() {
     _selectedLanguages = [];
     languagesStreamController = BehaviorSubject(seedValue: []);
     _buildSelectedLanguages();
@@ -35,5 +40,9 @@ class SettingsBloc {
     }
   }
 
-  Stream get languagesStream => languagesStreamController;
+  Stream get languagesStream => languagesStreamController.asBroadcastStream();
+
+  bool isLanguageSelected(String language) {
+    return _selectedLanguages.contains(language);
+  }
 }

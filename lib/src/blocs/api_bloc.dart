@@ -33,6 +33,7 @@ class ApiBloc {
     _myAccumulator = [];
     for (var _apiBloc in _apiLanguageBlocHandlers.values) {
       _apiBloc.cancelExistingSearch();
+      if (_apiBloc.languageIsSelected == false) continue;
       _apiBloc.searchForWord(query);
     }
   }
