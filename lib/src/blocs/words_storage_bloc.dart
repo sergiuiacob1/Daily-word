@@ -6,10 +6,16 @@ import 'package:rxdart/rxdart.dart';
 import './../models/word.dart';
 
 class WordsStorageBloc {
-  BehaviorSubject _storageWordsStream = BehaviorSubject();
-  static List<Word> _words = [];
+  final BehaviorSubject _storageWordsStream = BehaviorSubject(seedValue: []);
+  List<Word> _words = [];
 
-  WordsStorageBloc() {
+  static final WordsStorageBloc _singleton = WordsStorageBloc._internal();
+
+  factory WordsStorageBloc() {
+    return _singleton;
+  }
+
+  WordsStorageBloc._internal() {
     _buildWords();
   }
 
@@ -73,6 +79,5 @@ class WordsStorageBloc {
     file.writeAsString(json.encode(_allWordsJson), mode: FileMode.write);
   }
 
-  Stream get storageWordsStream => _storageWordsStream.stream;
-  static List<Word> get words => _words;
+  BehaviorSubject get storageWordsStream => _storageWordsStream;
 }

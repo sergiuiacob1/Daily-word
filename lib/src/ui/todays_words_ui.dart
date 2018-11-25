@@ -8,6 +8,7 @@ class TodaysWordsUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print ('Build ui');
     TodaysWordsBloc todaysWordsBloc = TodaysWordsProvider.of(context);
     return new CustomScrollView(
       scrollDirection: Axis.vertical,
@@ -21,7 +22,7 @@ class TodaysWordsUI extends StatelessWidget {
   Widget _buildContent(TodaysWordsBloc todaysWordsBloc) {
     return StreamBuilder(
         stream: todaysWordsBloc.words,
-        initialData: todaysWordsBloc.initialWords,
+        initialData: [],
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.length == 0)
             return SliverFillRemaining(
