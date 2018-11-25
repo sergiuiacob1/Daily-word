@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import './../models/word.dart';
+import '../providers/word_page_provider.dart';
+// import 'package:tts/tts.dart';
+// import 'package:flutter_tts/flutter_tts.dart';
 
 Widget buildWordWidget(BuildContext context, Word word) {
   return Container(
@@ -44,7 +47,7 @@ Widget buildWordWidget(BuildContext context, Word word) {
                     IconButton(
                       iconSize: 32.0,
                       icon: Icon(Icons.volume_up),
-                      onPressed: speakWord(word),
+                      onPressed: () => speakWord(word),
                     ),
                     IconButton(
                       iconSize: 32.0,
@@ -55,9 +58,7 @@ Widget buildWordWidget(BuildContext context, Word word) {
                       child: const Text('More...'),
                       color: Theme.of(context).primaryColor,
                       splashColor: word.language.color,
-                      onPressed: () {
-                        // Perform some action
-                      },
+                      onPressed: () => openWordPage(context, word),
                     ),
                   ],
                 )
@@ -70,8 +71,19 @@ Widget buildWordWidget(BuildContext context, Word word) {
   );
 }
 
-void speakWord(Word word){
-  
+void openWordPage(BuildContext context, Word word) {
+  Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => WordPageProvider(word: word)));
+}
+
+void speakWord(Word word) async {
+  // Tts.speak('hello');
+  // FlutterTts flutterTts = new FlutterTts();
+  // try {
+  //   flutterTts.speak("Hello World");
+  // } catch (e) {
+  //   print(e);
+  // }
 }
 
 Widget buildSliverAppBar(String title) {
