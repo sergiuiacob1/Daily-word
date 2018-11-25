@@ -19,10 +19,30 @@ class FavoritesUI extends StatelessWidget {
   }
 
   Widget _buildContent(FavoritesBloc favoritesBloc) {
-    return SliverFillRemaining(
-      child: Container(
-        color: Colors.purple,
-      ),
-    );
+    return StreamBuilder(
+        stream: favoritesBloc.favoriteWords,
+        initialData: [],
+        builder: (context, snapshot) {
+          if (!snapshot.hasData || snapshot.data.length == 0)
+            return SliverFillRemaining(
+              child: Container(
+                color: Colors.red[100],
+              ),
+            );
+
+          return SliverList(
+            delegate: new SliverChildBuilderDelegate(
+              (context, i) {
+                if (i % 2 == 0)
+                  return PageUtils.buildWordWidget(
+                      context, snapshot.data[i ~/ 2]);
+                return Divider(
+                  height: 32.0,
+                );
+              },
+              childCount: snapshot.data.length * 2 - 1,
+            ),
+          );
+        });
   }
 }

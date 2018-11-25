@@ -39,10 +39,7 @@ class SettingsUI extends StatelessWidget {
             children: languages.values
                 .map((language) => CheckboxListTile(
                       title: Text(language.name),
-                      value: snapshot.hasData
-                          ? snapshot.data.contains(language.name)
-                          : false,
-                      // value: snapshot.data.contains(language.name),
+                      value: snapshot.data.contains(language.name),
                       onChanged: (value) =>
                           bloc.languageCheck(language.name, value),
                     ))

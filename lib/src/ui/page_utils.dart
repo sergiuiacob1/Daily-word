@@ -3,40 +3,75 @@ import './../models/word.dart';
 
 Widget buildWordWidget(BuildContext context, Word word) {
   return Container(
+    padding: EdgeInsets.all(8.0),
     width: MediaQuery.of(context).size.width,
-    height: MediaQuery.of(context).size.height / 10,
+    // height: MediaQuery.of(context).size.height / 8,
     margin: EdgeInsets.all(8.0),
-    child: ListTile(
-      leading: Column(
-        children: <Widget>[
-          Image(
-            image: word.language.icon,
-            width: 64.0,
-            height: 64.0,
+    child: Row(
+      children: <Widget>[
+        Image(
+          image: word.language.icon,
+          width: 64.0,
+          height: 64.0,
+        ),
+        Expanded(
+          flex: 2,
+          child: Container(
+            padding: EdgeInsets.only(left: 16.0, right: 16.0),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  word.name,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.headline.fontSize),
+                ),
+                Divider(),
+                Text(
+                  word.definitions[word.definitions.keys.first][0],
+                  style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.subhead.fontSize),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IconButton(
+                      iconSize: 32.0,
+                      icon: Icon(Icons.volume_up),
+                      onPressed: speakWord(word),
+                    ),
+                    IconButton(
+                      iconSize: 32.0,
+                      icon: Icon(Icons.favorite_border),
+                      onPressed: null,
+                    ),
+                    FlatButton(
+                      child: const Text('More...'),
+                      color: Theme.of(context).primaryColor,
+                      splashColor: word.language.color,
+                      onPressed: () {
+                        // Perform some action
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
-        ],
-      ),
-      title: Text(
-        word.name,
-        textAlign: TextAlign.center,
-        style:
-            TextStyle(fontSize: Theme.of(context).textTheme.headline.fontSize),
-      ),
-      subtitle: Column(
-        children: <Widget>[
-          Divider(),
-          Text(
-            'No Definition',
-            style: TextStyle(
-                fontSize: Theme.of(context).textTheme.subhead.fontSize),
-            textAlign: TextAlign.center,
-            // maxLines: 3,
-            // overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
+        ),
+      ],
     ),
   );
+}
+
+void speakWord(Word word){
+  
 }
 
 Widget buildSliverAppBar(String title) {

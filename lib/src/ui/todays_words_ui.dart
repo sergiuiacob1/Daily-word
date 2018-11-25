@@ -8,7 +8,6 @@ class TodaysWordsUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print ('Build ui');
     TodaysWordsBloc todaysWordsBloc = TodaysWordsProvider.of(context);
     return new CustomScrollView(
       scrollDirection: Axis.vertical,
@@ -38,7 +37,7 @@ class TodaysWordsUI extends StatelessWidget {
                   return PageUtils.buildWordWidget(
                       context, snapshot.data[i ~/ 2]);
                 return Divider(
-                  height: 32.0,
+                  height: 16.0,
                 );
               },
               childCount: snapshot.data.length * 2 - 1,
