@@ -16,7 +16,18 @@ class WordPageUI extends StatelessWidget {
     WordPageBloc bloc = WordPageProvider.of(context);
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(word.name),
+        actions: <Widget>[
+          Image(
+            image: word.language.icon,
+            width: 32.0,
+            height: 32.0,
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 16.0),
+          )
+        ],
       ),
       body: CustomScrollView(
         slivers: _buildContent(bloc),
