@@ -25,9 +25,9 @@ Widget buildWordWidget(BuildContext context, Word word) {
             child: Column(
               children: <Widget>[
                 Text(
-                  word.name,
+                  word.name.toUpperCase(),
                   style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.headline.fontSize),
+                      fontSize: Theme.of(context).textTheme.title.fontSize),
                 ),
                 Divider(),
                 Text(
@@ -35,9 +35,9 @@ Widget buildWordWidget(BuildContext context, Word word) {
                       ? word.definitions[word.definitions.keys.first][0]
                       : 'No definitions',
                   style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.subhead.fontSize),
+                      fontSize: Theme.of(context).textTheme.body1.fontSize),
                   textAlign: TextAlign.center,
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Padding(
@@ -101,45 +101,17 @@ void speakWord(Word word) async {
   // }
 }
 
-Widget buildSliverAppBar(String title) {
+Widget buildSliverAppBar(BuildContext context, String title) {
   return SliverAppBar(
     expandedHeight: 300.0,
     pinned: true,
     flexibleSpace: FlexibleSpaceBar(
       title: Text(
         title,
+        style: TextStyle(
+          fontSize: Theme.of(context).textTheme.headline.fontSize,
+        ),
       ),
-    ),
-  );
-}
-
-Widget buildFutureContent(Future<Widget> content) {
-  return FutureBuilder<Widget>(
-    future: content,
-    builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-      switch (snapshot.connectionState) {
-        case ConnectionState.none:
-          return _sliverListPlaceholder('Waiting...');
-        case ConnectionState.active:
-        case ConnectionState.waiting:
-          return _sliverListPlaceholder('Waiting...');
-        case ConnectionState.done:
-          if (snapshot.hasError) {
-            debugPrint(snapshot.error);
-            return _sliverListPlaceholder('Error: ${snapshot.error}');
-          }
-          return snapshot.data;
-      }
-      return null; // unreachable
-    },
-  );
-}
-
-SliverList _sliverListPlaceholder(String _text) {
-  List<Widget> _list = [Center(child: Text(_text))];
-  return SliverList(
-    delegate: SliverChildListDelegate(
-      _list,
     ),
   );
 }

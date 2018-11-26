@@ -51,7 +51,7 @@ class WordPageUI extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: new Text(
               _defType,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontSize: Theme.of(context).textTheme.title.fontSize,
               ),
@@ -61,7 +61,13 @@ class WordPageUI extends StatelessWidget {
           ),
           sliver: new SliverList(
             delegate: new SliverChildBuilderDelegate((context, i) {
-              if (i % 2 == 0) return Text(word.definitions[_defType][i ~/ 2]);
+              if (i % 2 == 0)
+                return Text(
+                  word.definitions[_defType][i ~/ 2],
+                  style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.body2.fontSize,
+                  ),
+                );
               return Divider(
                 height: 32.0,
               );

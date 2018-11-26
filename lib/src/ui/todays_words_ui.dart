@@ -13,7 +13,7 @@ class TodaysWordsUI extends StatelessWidget {
       key: PageStorageKey("TodaysWordsUIScroll"),
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
-        PageUtils.buildSliverAppBar(title),
+        PageUtils.buildSliverAppBar(context, title),
         _buildContent(todaysWordsBloc),
       ],
     );

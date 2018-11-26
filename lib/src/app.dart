@@ -14,6 +14,10 @@ class App extends StatelessWidget {
       title: 'Daily Word',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        textTheme: TextTheme(
+          title: TextStyle(fontSize: 22.0),
+          body2: TextStyle(fontSize: 18.0),
+        ),
       ),
       home: MyHomePage(),
     );

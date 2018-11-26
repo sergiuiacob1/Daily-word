@@ -19,7 +19,6 @@ class ApiRomanianBloc extends ApiBlocUtils {
 
   @override
   Word buildWord(String _word, String _responseBody) {
-    bool _defIsRomanian = false;
     String _defType = '';
     Word _rez = Word(
       name: _word,

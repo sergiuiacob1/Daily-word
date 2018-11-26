@@ -13,7 +13,7 @@ class FavoritesUI extends StatelessWidget {
       key: PageStorageKey("FavoritesUIScroll"),
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
-        PageUtils.buildSliverAppBar(title),
+        PageUtils.buildSliverAppBar(context, title),
         _buildContent(favoritesBloc),
       ],
     );
