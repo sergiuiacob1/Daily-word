@@ -32,7 +32,9 @@ Widget buildWordWidget(BuildContext context, Word word) {
                 ),
                 Divider(),
                 Text(
-                  word.definitions[word.definitions.keys.first][0],
+                  word.definitions.keys.length > 0
+                      ? word.definitions[word.definitions.keys.first][0]
+                      : 'No definitions',
                   style: TextStyle(
                       fontSize: Theme.of(context).textTheme.subhead.fontSize),
                   textAlign: TextAlign.center,

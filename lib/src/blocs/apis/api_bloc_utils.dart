@@ -53,7 +53,7 @@ abstract class ApiBlocUtils {
     try {
       response = await http.get(_getRequest);
     } catch (e) {
-      debugPrint('Erroare la http get for $language');
+      debugPrint('Erroare la http get for $language: $e');
       return null;
     }
     if (response.statusCode != 200) return null;
