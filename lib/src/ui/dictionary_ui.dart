@@ -11,6 +11,7 @@ class DictionaryUI extends StatelessWidget {
   Widget build(BuildContext context) {
     DictionaryBloc dictionaryBloc = DictionaryProvider.of(context);
     return CustomScrollView(
+      key: PageStorageKey("DictionaryUIScroll"),
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
         _buildSliverAppBar(),
@@ -31,10 +32,8 @@ class DictionaryUI extends StatelessWidget {
         stream: dictionaryBloc.results,
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.length == 0)
-            return SliverFillRemaining(
-              child: Container(
-                color: Colors.yellow[100],
-              ),
+            return SliverPadding(
+              padding: EdgeInsets.only(top: 9999999999.9),
             );
 
           return SliverList(

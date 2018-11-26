@@ -26,7 +26,7 @@ class TodaysWordsUI extends StatelessWidget {
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.length == 0)
             return SliverPadding(
-              padding: EdgeInsets.only(top: 9999999999.9),
+              padding: EdgeInsets.only(top: 999999.9),
             );
 
           return SliverList(
