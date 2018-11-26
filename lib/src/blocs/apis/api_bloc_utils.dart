@@ -35,7 +35,7 @@ abstract class ApiBlocUtils {
   }
 
   Future<void> searchForWords(String _word);
-  
+
   Future<void> searchForSingleWord(String _word) async {
     if (_word == '') {
       resultsStream.add(null);
@@ -47,8 +47,8 @@ abstract class ApiBlocUtils {
     webSearches.add(_webSearch);
   }
 
-  Future<String> getResponseBody(String _word) async {
-    final _getRequest = getDefinitionUrl.replaceFirst("{1}", _word);
+  Future<String> getResponseBody(String _url) async {
+    final _getRequest = _url;
     var response;
     try {
       response = await http.get(_getRequest);
@@ -62,7 +62,9 @@ abstract class ApiBlocUtils {
   /// Get results from the Internet
   Future<Word> apiSearchForWord(String _word) async {
     Word _searchResult;
-    String _responseBody = await getResponseBody(_word);
+    String _responseBody = await getResponseBody(
+      getDefinitionUrl.replaceFirst("{1}", _word),
+    );
     if (_responseBody == '') return null;
     _searchResult = buildWord(_word, _responseBody);
     if (_searchResult != null) {

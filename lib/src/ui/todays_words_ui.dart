@@ -10,6 +10,7 @@ class TodaysWordsUI extends StatelessWidget {
   Widget build(BuildContext context) {
     TodaysWordsBloc todaysWordsBloc = TodaysWordsProvider.of(context);
     return new CustomScrollView(
+      key: PageStorageKey("TodaysWordsUIScroll"),
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
         PageUtils.buildSliverAppBar(title),
@@ -24,10 +25,8 @@ class TodaysWordsUI extends StatelessWidget {
         initialData: [],
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.length == 0)
-            return SliverFillRemaining(
-              child: Container(
-                color: Colors.red[100],
-              ),
+            return SliverPadding(
+              padding: EdgeInsets.only(top: 9999999999.9),
             );
 
           return SliverList(

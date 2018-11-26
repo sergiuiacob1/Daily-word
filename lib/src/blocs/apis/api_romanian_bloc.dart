@@ -15,6 +15,8 @@ class ApiRomanianBloc extends ApiBlocUtils {
 
   Future<void> searchForWords(String _word) async {
     searchForSingleWord(_word);
+    // in Romanian, I might have multiple versions for the same word
+    // e.g. "mama" => "mamă"
   }
 
   @override
