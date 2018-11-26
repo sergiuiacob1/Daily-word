@@ -42,7 +42,7 @@ class ApiRomanianBloc extends ApiBlocUtils {
       }
     }
 
-    WordsStorageBloc().writeFile(_rez);
+    WordsStorageBloc().addNewDailyWord(_rez);
     return _rez;
   }
 }

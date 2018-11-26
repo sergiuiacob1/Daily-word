@@ -20,7 +20,7 @@ class TodaysWordsUI extends StatelessWidget {
 
   Widget _buildContent(TodaysWordsBloc todaysWordsBloc) {
     return StreamBuilder(
-        stream: todaysWordsBloc.words,
+        stream: todaysWordsBloc.todaysWords,
         initialData: [],
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.length == 0)

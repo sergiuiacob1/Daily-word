@@ -6,8 +6,11 @@ import 'package:rxdart/rxdart.dart';
 import './../models/word.dart';
 
 class WordsStorageBloc {
-  final BehaviorSubject _storageWordsStream = BehaviorSubject(seedValue: []);
-  List<Word> _words = [];
+  final BehaviorSubject _todaysWordsStream = BehaviorSubject(seedValue: []);
+  final BehaviorSubject _favoriteWordsStream = BehaviorSubject(seedValue: []);
+  List<Word> _todaysWords = [], _favoriteWords = [];
+  final String _todaysWordsFileName = "todaysWords.txt",
+      _favoriteWordsFileName = "favoriteWords.txt";
 
   static final WordsStorageBloc _singleton = WordsStorageBloc._internal();
 
@@ -17,15 +20,34 @@ class WordsStorageBloc {
 
   WordsStorageBloc._internal() {
     _buildWords();
+    _listenToFavoriteStatusChanges();
+  }
+
+  void _listenToFavoriteStatusChanges() async {
+    _favoriteWordsStream.listen((onData) {
+      for (var i = 0; i < _todaysWords.length; ++i)
+        if (_favoriteWords
+                .where((_favWord) =>
+                    _favWord.name == _todaysWords[i].name &&
+                    _favWord.language == _todaysWords[i].language)
+                .length >
+            0)
+          _todaysWords[i].isFavorite = true;
+        else
+          _todaysWords[i].isFavorite = false;
+      _todaysWordsStream.add(_todaysWords);
+    });
   }
 
   void _buildWords() async {
-    _words = await getWordsFromStorage();
-    _storageWordsStream.add(_words);
+    _todaysWords = await getWordsFromStorage(_todaysWordsFileName);
+    _todaysWordsStream.add(_todaysWords);
+    _favoriteWords = await getWordsFromStorage(_favoriteWordsFileName);
+    _favoriteWordsStream.add(_favoriteWords);
   }
 
   void dispose() {
-    _storageWordsStream.close();
+    _todaysWordsStream.close();
   }
 
   Future<String> get _localPath async {
@@ -33,19 +55,19 @@ class WordsStorageBloc {
     return directory.path;
   }
 
-  Future<File> get _localFile async {
+  Future<File> _localFile(String _fileName) async {
     final path = await _localPath;
-    File _file = new File('$path/words.txt');
+    File _file = new File('$path/$_fileName');
     if (!_file.existsSync()) {
       _file.createSync();
-      _file.writeAsString('{"words": [] }', mode: FileMode.write);
+      _file.writeAsString(json.encode([]), mode: FileMode.write);
     }
     return _file;
   }
 
-  Future<List<Word>> getWordsFromStorage() async {
+  Future<List<Word>> getWordsFromStorage(String _fileName) async {
     List<Word> _words = [];
-    var _json = await readFile();
+    var _json = await readFile(_fileName);
     if (_json.length == 0) return [];
     for (var _word in _json) {
       _words.add(new Word.fromJson(_word));
@@ -53,10 +75,10 @@ class WordsStorageBloc {
     return _words;
   }
 
-  Future<dynamic> readFile() async {
+  Future<dynamic> readFile(String _fileName) async {
     dynamic _jsonObject;
     try {
-      final file = await _localFile;
+      final file = await _localFile(_fileName);
       String content = await file.readAsString();
       if (content == '') return [];
       _jsonObject = json.decode(content);
@@ -66,32 +88,29 @@ class WordsStorageBloc {
     }
   }
 
-  Future<void> writeFile(Word word, [bool changeFavoriteStatus = false]) async {
-    final file = await _localFile;
-    List<Word> _words = await getWordsFromStorage();
-    int _pos;
-
-    _pos = _words.indexWhere(
-        (item) => item.name == word.name && item.language == word.language);
-
-    if (_pos == -1) {
-      _words.insert(0, word);
-    } else {
-      if (changeFavoriteStatus == true)
-        _words[_pos].isFavorite = !(_words[_pos].isFavorite);
-    }
-    _storageWordsStream.add(_words);
+  Future<void> writeFile(List<Word> _words, String _fileName) async {
+    final file = await _localFile(_fileName);
     file.writeAsString(json.encode(_words), mode: FileMode.write);
   }
 
-  BehaviorSubject get storageWordsStream => _storageWordsStream;
+  void changeFavoriteStatus(Word word) {
+    word.isFavorite = !word.isFavorite;
+    if (word.isFavorite) // became favorite
+      _favoriteWords.insert(0, word);
+    else // not favorite anymore
+      _favoriteWords.removeWhere(
+          (item) => item.name == word.name && item.language == word.language);
 
-  bool isWordFavorite(Word word) {
-    return false;
-    _words
-        .where(
-            (item) => item.name == word.name && item.language == word.language)
-        .first
-        .isFavorite;
+    writeFile(_favoriteWords, "favoriteWords.txt");
+    _favoriteWordsStream.add(_favoriteWords);
   }
+
+  void addNewDailyWord(Word word) {
+    _todaysWords.insert(0, word);
+    writeFile(_todaysWords, _todaysWordsFileName);
+    _todaysWordsStream.add(_todaysWords);
+  }
+
+  BehaviorSubject get todaysWordsStream => _todaysWordsStream;
+  BehaviorSubject get favoriteWordsStream => _favoriteWordsStream;
 }

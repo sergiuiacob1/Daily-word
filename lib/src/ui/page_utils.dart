@@ -56,10 +56,12 @@ Widget buildWordWidget(BuildContext context, Word word) {
                     IconButton(
                       iconSize: 32.0,
                       icon: Icon(
-                        word.isFavorite ? Icons.favorite : Icons.favorite_border,
+                        word.isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
                         color: Colors.redAccent,
                       ),
-                      onPressed: () => _addWordToFavorites(word),
+                      onPressed: () => _changeFavoriteStatus(word),
                     ),
                     FlatButton(
                       child: const Text('More...'),
@@ -78,10 +80,9 @@ Widget buildWordWidget(BuildContext context, Word word) {
   );
 }
 
-void _addWordToFavorites(Word word){
+void _changeFavoriteStatus(Word word) {
   WordsStorageBloc _storageBloc = WordsStorageBloc();
-  word.isFavorite = true;
-  _storageBloc.writeFile(word, true);
+  _storageBloc.changeFavoriteStatus(word);
 }
 
 void _openWordPage(BuildContext context, Word word) {

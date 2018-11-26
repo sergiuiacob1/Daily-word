@@ -4,5 +4,5 @@ import 'package:rxdart/rxdart.dart';
 class FavoritesBloc {
   WordsStorageBloc _storageBloc = WordsStorageBloc();
 
-  BehaviorSubject get favoriteWords => _storageBloc.storageWordsStream;
+  BehaviorSubject get favoriteWords => _storageBloc.favoriteWordsStream;
 }

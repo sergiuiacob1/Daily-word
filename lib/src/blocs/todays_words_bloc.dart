@@ -6,5 +6,5 @@ import './../models/word.dart';
 class TodaysWordsBloc {
   WordsStorageBloc _storageBloc = WordsStorageBloc();
 
-  BehaviorSubject get words => _storageBloc.storageWordsStream;
+  BehaviorSubject get todaysWords => _storageBloc.todaysWordsStream;
 }
