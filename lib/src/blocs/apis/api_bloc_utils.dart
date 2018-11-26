@@ -8,10 +8,10 @@ import './../settings_bloc.dart';
 import './../words_storage_bloc.dart';
 
 abstract class ApiBlocUtils {
-  PublishSubject _observable = PublishSubject();
+  PublishSubject _resultsStream = PublishSubject();
   SettingsBloc settingsBloc = SettingsBloc();
   final String language, getDefinitionUrl, getDailyWordUrl;
-  CancelableCompleter _webSearch;
+  List<CancelableCompleter> webSearches = [];
   bool _languageIsSelected = true;
 
   ApiBlocUtils({
@@ -27,37 +27,36 @@ abstract class ApiBlocUtils {
   }
 
   void dispose() {
-    _observable.close();
+    _resultsStream.close();
   }
 
-  void cancelExistingSearch() {
-    if (_webSearch != null) _webSearch.operation.cancel();
+  void cancelExistingSearches() {
+    for (CancelableCompleter _item in webSearches) _item.operation.cancel();
   }
 
   /// Makes a new search for the query
-  Future<void> searchForWord(String _word) async {
-    if (_word == '') {
-      _observable.add(null);
-      return;
-    }
-    _webSearch = CancelableCompleter();
-    _webSearch.operation.value.then((result) => _observable.add(result));
-    _webSearch.complete(_apiSearchForWord(_word));
-  }
+  ///
+  /// May vary based on the language
+  Future<void> searchForWord(String _word);
 
-  /// Get results from the Internet
-  Future<Word> _apiSearchForWord(String _word) async {
-    Word _searchResult;
+  Future<String> getResponseBody(String _word) async {
     final _getRequest = getDefinitionUrl.replaceFirst("{1}", _word);
     var response;
     try {
       response = await http.get(_getRequest);
     } catch (e) {
       debugPrint('Erroare la http get for $language: $e');
-      return null;
+      return '';
     }
-    if (response.statusCode != 200) return null;
-    _searchResult = buildWord(_word, response.body);
+    return response.body;
+  }
+
+  /// Get results from the Internet
+  Future<Word> apiSearchForWord(String _word) async {
+    Word _searchResult;
+    String _responseBody = await getResponseBody(_word);
+    if (_responseBody == '') return null;
+    _searchResult = buildWord(_word, _responseBody);
     if (_searchResult != null) {
       _searchResult.isFavorite = WordsStorageBloc()
               .favoriteWordsStream
@@ -72,10 +71,11 @@ abstract class ApiBlocUtils {
   }
 
   /// This will be overriden based on the language
+  ///
   /// Each HTTP response has a different structure, so it has to be parsed differently
   Word buildWord(String _word, String _responseBody);
 
-  PublishSubject get observable => _observable;
+  PublishSubject get resultsStream => _resultsStream;
 
   bool get languageIsSelected => _languageIsSelected;
 }

@@ -13,7 +13,7 @@ class ApiBloc {
   ApiBloc() {
     _buildApiBlocHandlers();
     Observable.merge(
-      _apiLanguageBlocHandlers.values.map((item) => item.observable),
+      _apiLanguageBlocHandlers.values.map((item) => item.resultsStream),
     ).scan((accumulator, word, i) => _mergeData(word), []).listen((onData) {
       _wordsObservable.add(onData);
     });
@@ -38,7 +38,7 @@ class ApiBloc {
   Future<void> searchForWord(String query) async {
     _myAccumulator = [];
     for (var _apiBloc in _apiLanguageBlocHandlers.values) {
-      _apiBloc.cancelExistingSearch();
+      _apiBloc.cancelExistingSearches();
       if (_apiBloc.languageIsSelected == false) continue;
       _apiBloc.searchForWord(query);
     }

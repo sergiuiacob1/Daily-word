@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import './api_bloc_utils.dart';
 import './../../models/word.dart';
 import './../../models/language.dart';
+import 'package:async/async.dart';
 
 class ApiDefaultLanguageBloc extends ApiBlocUtils {
   ApiDefaultLanguageBloc({@required String language})
@@ -14,6 +15,18 @@ class ApiDefaultLanguageBloc extends ApiBlocUtils {
               'https://en.wiktionary.org/w/index.php?title={1}&printable=yes',
           getDailyWordUrl: '',
         );
+
+  @override
+  Future<void> searchForWord(String _word) async {
+    if (_word == '') {
+      resultsStream.add(null);
+      return;
+    }
+    CancelableCompleter _webSearch = CancelableCompleter();
+    _webSearch.operation.value.then((result) => resultsStream.add(result));
+    _webSearch.complete(apiSearchForWord(_word));
+    webSearches.add(_webSearch);
+  }
 
   @override
   Word buildWord(String _word, String _responseBody) {

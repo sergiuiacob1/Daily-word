@@ -4,6 +4,7 @@ import 'api_bloc_utils.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
 import './../words_storage_bloc.dart';
+import 'package:async/async.dart';
 
 class ApiRomanianBloc extends ApiBlocUtils {
   ApiRomanianBloc()
@@ -12,6 +13,18 @@ class ApiRomanianBloc extends ApiBlocUtils {
           getDefinitionUrl: "https://ro.wiktionary.org/wiki/{1}?printable=yes",
           getDailyWordUrl: "",
         );
+
+  @override
+  Future<void> searchForWord(String _word) async {
+    if (_word == '') {
+      resultsStream.add(null);
+      return;
+    }
+    CancelableCompleter _webSearch = CancelableCompleter();
+    _webSearch.operation.value.then((result) => resultsStream.add(result));
+    _webSearch.complete(apiSearchForWord(_word));
+    webSearches.add(_webSearch);
+  }
 
   @override
   Word buildWord(String _word, String _responseBody) {
