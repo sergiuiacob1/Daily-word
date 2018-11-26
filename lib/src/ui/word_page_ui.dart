@@ -15,7 +15,12 @@ class WordPageUI extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(word.name),
+        title: Text(
+          word.name.toUpperCase(),
+          style: TextStyle(
+            fontSize: Theme.of(context).textTheme.headline.fontSize,
+          ),
+        ),
         actions: <Widget>[
           Image(
             image: word.language.icon,
@@ -48,8 +53,10 @@ class WordPageUI extends StatelessWidget {
               _defType,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 30.0,
+                fontSize: Theme.of(context).textTheme.title.fontSize,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           sliver: new SliverList(
@@ -60,12 +67,6 @@ class WordPageUI extends StatelessWidget {
               );
             }, childCount: word.definitions[_defType].length * 2 - 1),
           ),
-        ),
-      );
-
-      _content.add(
-        SliverPadding(
-          padding: EdgeInsets.only(bottom: 16.0),
         ),
       );
     }

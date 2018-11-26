@@ -26,7 +26,6 @@ Widget buildWordWidget(BuildContext context, Word word) {
               children: <Widget>[
                 Text(
                   word.name,
-                  textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: Theme.of(context).textTheme.headline.fontSize),
                 ),
