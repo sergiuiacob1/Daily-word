@@ -1,9 +1,9 @@
 import 'package:rxdart/rxdart.dart';
-import 'api_bloc.dart';
+import 'internet_results_bloc.dart';
 import './words_storage_bloc.dart';
 
 class DictionaryBloc {
-  final ApiBloc apiBloc = ApiBloc();
+  final InternetResultsBloc apiBloc = InternetResultsBloc();
   ReplaySubject<String> _query = ReplaySubject<String>();
   BehaviorSubject _searchResults = BehaviorSubject(seedValue: []);
   DictionaryBloc() {

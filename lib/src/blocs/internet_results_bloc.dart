@@ -5,12 +5,12 @@ import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
 
-class ApiBloc {
+class InternetResultsBloc {
   BehaviorSubject _wordsObservable = BehaviorSubject(seedValue: []);
   List<Word> _myAccumulator = [];
   Map<String, dynamic> _apiLanguageBlocHandlers = {};
 
-  ApiBloc() {
+  InternetResultsBloc() {
     _buildApiBlocHandlers();
     Observable.merge(
       _apiLanguageBlocHandlers.values.map((item) => item.resultsStream),
