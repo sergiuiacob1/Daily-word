@@ -58,14 +58,16 @@ abstract class ApiBlocUtils {
     }
     if (response.statusCode != 200) return null;
     _searchResult = buildWord(_word, response.body);
-    _searchResult.isFavorite = WordsStorageBloc()
-            .favoriteWordsStream
-            .value
-            .where((item) =>
-                item.name == _searchResult.name &&
-                item.language == _searchResult.language)
-            .length >
-        0;
+    if (_searchResult != null) {
+      _searchResult.isFavorite = WordsStorageBloc()
+              .favoriteWordsStream
+              .value
+              .where((item) =>
+                  item.name == _searchResult.name &&
+                  item.language == _searchResult.language)
+              .length >
+          0;
+    }
     return _searchResult;
   }
 

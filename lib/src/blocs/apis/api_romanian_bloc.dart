@@ -15,9 +15,10 @@ class ApiRomanianBloc extends ApiBlocUtils {
 
   @override
   Word buildWord(String _word, String _responseBody) {
+    bool _defIsRomanian = false;
     String _defType = '';
     Word _rez = Word(
-      name: _word + ' - ' + language,
+      name: _word,
       definitions: {},
       language: languages[language],
       isFavorite: false,
@@ -29,6 +30,11 @@ class ApiRomanianBloc extends ApiBlocUtils {
     List<Element> _children = _content[0].children;
 
     for (Element _element in _children) {
+      if (_element.outerHtml.startsWith("<h2")) {
+        if (_element.children != null)
+          _defIsRomanian = (_element.children.first.id == "rom.C3.A2n.C4.83");
+      }
+      if (_defIsRomanian == false) continue;
       if (_element.outerHtml.startsWith("<h3")) {
         _defType = _element.text;
       }
@@ -41,6 +47,8 @@ class ApiRomanianBloc extends ApiBlocUtils {
         }
       }
     }
+
+    if (_rez.definitions.isEmpty) return null;
 
     WordsStorageBloc().addNewDailyWord(_rez);
     return _rez;
