@@ -4,7 +4,6 @@ import 'api_bloc_utils.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
 import './../words_storage_bloc.dart';
-import 'package:async/async.dart';
 
 class ApiRomanianBloc extends ApiBlocUtils {
   ApiRomanianBloc()

@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 class InternetResultsBloc {
-  BehaviorSubject _wordsObservable = BehaviorSubject(seedValue: []);
+  BehaviorSubject _wordsStream = BehaviorSubject(seedValue: []);
   List<Word> _myAccumulator = [];
   Map<String, dynamic> _apiLanguageBlocHandlers = {};
 
@@ -15,12 +15,12 @@ class InternetResultsBloc {
     Observable.merge(
       _apiLanguageBlocHandlers.values.map((item) => item.resultsStream),
     ).scan((accumulator, word, i) => _mergeData(word), []).listen((onData) {
-      _wordsObservable.add(onData);
+      _wordsStream.add(onData);
     });
   }
 
   void dispose() {
-    _wordsObservable.close();
+    _wordsStream.close();
   }
 
   void _buildApiBlocHandlers() {
@@ -45,5 +45,5 @@ class InternetResultsBloc {
   }
 
   /// It merges the Observables (one for each language) into one BehaviorSubject
-  BehaviorSubject get wordsStream => _wordsObservable;
+  BehaviorSubject get wordsStream => _wordsStream;
 }

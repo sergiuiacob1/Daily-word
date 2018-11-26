@@ -1,11 +1,9 @@
-// import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart';
 import 'package:flutter/foundation.dart';
 import './api_bloc_utils.dart';
 import './../../models/word.dart';
 import './../../models/language.dart';
-import 'package:async/async.dart';
 
 class ApiDefaultLanguageBloc extends ApiBlocUtils {
   ApiDefaultLanguageBloc({@required String language})

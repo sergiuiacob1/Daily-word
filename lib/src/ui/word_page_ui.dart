@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import './../models/word.dart';
-import './../models/language.dart';
-import './page_utils.dart' as PageUtils;
 import './../providers/word_page_provider.dart';
 import './../blocs/word_page_bloc.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
