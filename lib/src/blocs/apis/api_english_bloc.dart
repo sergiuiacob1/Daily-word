@@ -14,16 +14,8 @@ class ApiEnglishBloc extends ApiBlocUtils {
           getDailyWordUrl: "",
         );
 
-  @override
-  Future<void> searchForWord(String _word) async {
-    if (_word == '') {
-      resultsStream.add(null);
-      return;
-    }
-    CancelableCompleter _webSearch = CancelableCompleter();
-    _webSearch.operation.value.then((result) => resultsStream.add(result));
-    _webSearch.complete(apiSearchForWord(_word));
-    webSearches.add(_webSearch);
+  Future<void> searchForWords(String _word) async {
+    searchForSingleWord(_word);
   }
 
   @override

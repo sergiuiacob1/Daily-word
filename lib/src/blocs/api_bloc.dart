@@ -40,7 +40,7 @@ class ApiBloc {
     for (var _apiBloc in _apiLanguageBlocHandlers.values) {
       _apiBloc.cancelExistingSearches();
       if (_apiBloc.languageIsSelected == false) continue;
-      _apiBloc.searchForWord(query);
+      _apiBloc.searchForWords(query);
     }
   }
 

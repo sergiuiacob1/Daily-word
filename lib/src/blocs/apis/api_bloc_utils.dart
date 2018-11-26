@@ -34,10 +34,18 @@ abstract class ApiBlocUtils {
     for (CancelableCompleter _item in webSearches) _item.operation.cancel();
   }
 
-  /// Makes a new search for the query
-  ///
-  /// May vary based on the language
-  Future<void> searchForWord(String _word);
+  Future<void> searchForWords(String _word);
+  
+  Future<void> searchForSingleWord(String _word) async {
+    if (_word == '') {
+      resultsStream.add(null);
+      return;
+    }
+    CancelableCompleter _webSearch = CancelableCompleter();
+    _webSearch.operation.value.then((result) => resultsStream.add(result));
+    _webSearch.complete(apiSearchForWord(_word));
+    webSearches.add(_webSearch);
+  }
 
   Future<String> getResponseBody(String _word) async {
     final _getRequest = getDefinitionUrl.replaceFirst("{1}", _word);
