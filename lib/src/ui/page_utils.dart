@@ -124,7 +124,7 @@ Widget buildFutureContent(Future<Widget> content) {
           return _sliverListPlaceholder('Waiting...');
         case ConnectionState.done:
           if (snapshot.hasError) {
-            print(snapshot.error);
+            debugPrint(snapshot.error);
             return _sliverListPlaceholder('Error: ${snapshot.error}');
           }
           return snapshot.data;

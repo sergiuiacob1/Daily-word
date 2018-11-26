@@ -6,15 +6,21 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 class ApiBloc {
-  Observable _wordsObservable;
+  BehaviorSubject _wordsObservable = BehaviorSubject(seedValue: []);
   List<Word> _myAccumulator = [];
   Map<String, dynamic> _apiLanguageBlocHandlers = {};
 
   ApiBloc() {
     _buildApiBlocHandlers();
-    _wordsObservable = Observable.merge(
+    Observable.merge(
       _apiLanguageBlocHandlers.values.map((item) => item.observable),
-    ).scan((accumulator, word, i) => _mergeData(word), []).asBroadcastStream();
+    ).scan((accumulator, word, i) => _mergeData(word), []).listen((onData) {
+      _wordsObservable.add(onData);
+    });
+  }
+
+  void dispose() {
+    _wordsObservable.close();
   }
 
   void _buildApiBlocHandlers() {
@@ -38,7 +44,6 @@ class ApiBloc {
     }
   }
 
-  /// This will return an Observable with the words from all of the languages
-  /// It merges the Observables (one for each language) into one
-  Observable get wordsStream => _wordsObservable.asBroadcastStream();
+  /// It merges the Observables (one for each language) into one BehaviorSubject
+  BehaviorSubject get wordsStream => _wordsObservable;
 }

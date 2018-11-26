@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import './../../models/word.dart';
 import './../settings_bloc.dart';
+import './../words_storage_bloc.dart';
 
 abstract class ApiBlocUtils {
   PublishSubject _observable = PublishSubject();
@@ -46,6 +47,7 @@ abstract class ApiBlocUtils {
 
   /// Get results from the Internet
   Future<Word> _apiSearchForWord(String _word) async {
+    Word _searchResult;
     final _getRequest = getDefinitionUrl.replaceFirst("{1}", _word);
     var response;
     try {
@@ -55,7 +57,16 @@ abstract class ApiBlocUtils {
       return null;
     }
     if (response.statusCode != 200) return null;
-    return buildWord(_word, response.body);
+    _searchResult = buildWord(_word, response.body);
+    _searchResult.isFavorite = WordsStorageBloc()
+            .favoriteWordsStream
+            .value
+            .where((item) =>
+                item.name == _searchResult.name &&
+                item.language == _searchResult.language)
+            .length >
+        0;
+    return _searchResult;
   }
 
   /// This will be overriden based on the language
