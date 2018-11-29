@@ -39,7 +39,7 @@ abstract class ApiBlocUtils {
 
   Future<void> searchForSingleWord(String _word) async {
     if (_word == '') {
-      resultsStream.add(null);
+      _resultsStream.add(null);
       return;
     }
     CancelableCompleter _webSearch = CancelableCompleter();
@@ -134,5 +134,6 @@ abstract class ApiBlocUtils {
   PublishSubject get resultsStream => _resultsStream;
 
   bool get languageIsSelected => _languageIsSelected;
+
   bool get isStillSearching => webSearches.length > 0;
 }

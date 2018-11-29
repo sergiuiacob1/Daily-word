@@ -32,6 +32,7 @@ class WordNotifierBloc {
   }
 
   Future testNotification() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
     return;
     print('making notification');
 

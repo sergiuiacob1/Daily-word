@@ -31,60 +31,62 @@ class DictionaryUI extends StatelessWidget {
     return StreamBuilder(
         stream: dictionaryBloc.results,
         builder: (context, snapshot) {
-          if (dictionaryBloc.isStillSearching) {
-            print('I AM SEARCHING----------------');
-          } else
-            print('gata nu mai am search');
-
+          // Nothing in the search field
           if (!snapshot.hasData) {
-            print('n-am niciun data in dic ui');
-            return SliverPadding(
-              padding: EdgeInsets.only(top: 9999999999.9),
-            );
-          }
-
-          if (snapshot.data.length == 0) {
-            print('am data cu length = 0');
             return SliverFillRemaining(
-              child: Container(
-                color: Colors.yellow,
+              child: Center(
+                child: Text("Write in the text field to search for words"),
               ),
             );
           }
 
+          // search is done with no results
+          if (snapshot.data.length == 0 && !dictionaryBloc.isStillSearching) {
+            return SliverFillRemaining(
+              child: Center(
+                child: Text("No results"),
+              ),
+            );
+          }
+
+          // search results incoming
           return SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, i) {
-                if (i % 2 == 0)
-                  return PageUtils.buildWordWidget(
-                      context, snapshot.data[i ~/ 2]);
-                return Divider(
-                  height: 32.0,
-                );
+                if (dictionaryBloc.isStillSearching) {
+                  if (i == 0) return LinearProgressIndicator();
+                  if (i % 2 == 1)
+                    return PageUtils.buildWordWidget(
+                        context, snapshot.data[(i - 1) ~/ 2]);
+                  return Divider(
+                    height: 32.0,
+                  );
+                } else {
+                  if (i % 2 == 0)
+                    return PageUtils.buildWordWidget(
+                        context, snapshot.data[i ~/ 2]);
+                  return Divider(
+                    height: 32.0,
+                  );
+                }
               },
-              childCount: snapshot.data.length * 2 - 1,
+              childCount: snapshot.data.length == 0
+                  ? 1
+                  : snapshot.data.length * 2 -
+                      1 +
+                      (dictionaryBloc.isStillSearching == true ? 1 : 0),
             ),
           );
         });
   }
 
   Widget _buildSearchBar(DictionaryBloc dictionaryBloc) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Flexible(
-          child: TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Cauta',
-            ),
-            onChanged: dictionaryBloc.handleSearch,
-          ),
-        ),
-        Icon(
-          Icons.search,
-        ),
-      ],
+    return TextField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'Cauta',
+      ),
+      onChanged: dictionaryBloc.handleSearch,
     );
   }
 

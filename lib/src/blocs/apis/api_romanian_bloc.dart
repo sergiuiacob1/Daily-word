@@ -39,7 +39,6 @@ class ApiRomanianBloc extends ApiBlocUtils {
     );
 
     /// Definitions from dex.ro
-    _defType = "definitie";
     final _html = parse(_responseBody);
     var _resultsWrapper = _html.getElementById("results");
     if (_resultsWrapper == null) return null;
@@ -56,31 +55,6 @@ class ApiRomanianBloc extends ApiBlocUtils {
       if (_rez.definitions[_defType] == null) _rez.definitions[_defType] = [];
       _rez.definitions[_defType].add(_definition.text);
     }
-
-    /// This is for Wiktionary!!!
-    // final _html = parse(_responseBody);
-    // final _content = _html.getElementsByClassName("mw-parser-output");
-    // if (_content.length == 0) return null;
-    // List<Element> _children = _content[0].children;
-
-    // for (Element _element in _children) {
-    //   if (_element.outerHtml.startsWith("<h2")) {
-    //     if (_element.children != null)
-    //       _defIsRomanian = (_element.children.first.id == "rom.C3.A2n.C4.83");
-    //   }
-    //   if (_defIsRomanian == false) continue;
-    //   if (_element.outerHtml.startsWith("<h3")) {
-    //     _defType = _element.text;
-    //   }
-    //   if (_element.outerHtml.startsWith("<ol")) {
-    //     for (Element _definition in _element.children) {
-    //       // process the definitions
-    //       if (_rez.definitions[_defType] == null)
-    //         _rez.definitions[_defType] = [];
-    //       _rez.definitions[_defType].add(_definition.text);
-    //     }
-    //   }
-    // }
 
     if (_rez.definitions.isEmpty) return null;
     return _rez;
