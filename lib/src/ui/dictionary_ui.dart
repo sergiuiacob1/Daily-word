@@ -15,14 +15,14 @@ class DictionaryUI extends StatelessWidget {
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
         _buildSliverAppBar(),
-        _buildContent(dictionaryBloc),
+        _buildContent(context, dictionaryBloc),
       ],
     );
   }
 
-  Widget _buildContent(DictionaryBloc dictionaryBloc) {
+  Widget _buildContent(BuildContext context, DictionaryBloc dictionaryBloc) {
     return SliverStickyHeader(
-      header: _buildSearchBar(dictionaryBloc),
+      header: _buildSearchBar(context, dictionaryBloc),
       sliver: _buildSearchResults(dictionaryBloc),
     );
   }
@@ -80,13 +80,21 @@ class DictionaryUI extends StatelessWidget {
         });
   }
 
-  Widget _buildSearchBar(DictionaryBloc dictionaryBloc) {
+  Widget _buildSearchBar(BuildContext context, DictionaryBloc dictionaryBloc) {
     return TextField(
+      cursorColor: Theme.of(context).accentColor,
+      autocorrect: false,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: Theme.of(context).textTheme.body2.fontSize,
+      ),
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: 'Cauta',
+        contentPadding: EdgeInsets.all(16.0),
+        border: UnderlineInputBorder(),
+        hintText: 'Cauta un cuvant',
       ),
       onChanged: dictionaryBloc.handleSearch,
+      onSubmitted: dictionaryBloc.handleSearch,
     );
   }
 
