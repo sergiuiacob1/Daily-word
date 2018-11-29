@@ -31,10 +31,26 @@ class DictionaryUI extends StatelessWidget {
     return StreamBuilder(
         stream: dictionaryBloc.results,
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.length == 0)
+          if (dictionaryBloc.isStillSearching) {
+            print('I AM SEARCHING----------------');
+          } else
+            print('gata nu mai am search');
+
+          if (!snapshot.hasData) {
+            print('n-am niciun data in dic ui');
             return SliverPadding(
               padding: EdgeInsets.only(top: 9999999999.9),
             );
+          }
+
+          if (snapshot.data.length == 0) {
+            print('am data cu length = 0');
+            return SliverFillRemaining(
+              child: Container(
+                color: Colors.yellow,
+              ),
+            );
+          }
 
           return SliverList(
             delegate: SliverChildBuilderDelegate(

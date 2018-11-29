@@ -32,15 +32,18 @@ class WordNotifierBloc {
   }
 
   Future testNotification() async {
+    return;
     print('making notification');
+
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        '2', 'Test', 'Receive notification with the word of the dy');
+        'repeating channel id',
+        'repeating channel name',
+        'repeating description');
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-
-    await flutterLocalNotificationsPlugin.periodicallyShow(0, "this is every minute",
-        "body text", RepeatInterval.EveryMinute, platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.periodicallyShow(0, 'repeating title',
+        'repeating body', RepeatInterval.EveryMinute, platformChannelSpecifics);
   }
 
   Future scheduleNotification() async {

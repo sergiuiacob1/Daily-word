@@ -8,14 +8,25 @@ class InternetResultsBloc {
   BehaviorSubject _wordsStream = BehaviorSubject(seedValue: []);
   List<Word> _myAccumulator = [];
   Map<String, dynamic> _apiLanguageBlocHandlers = {};
+  bool _stillSearching = false;
 
   InternetResultsBloc() {
     _buildApiBlocHandlers();
     Observable.merge(
       _apiLanguageBlocHandlers.values.map((item) => item.resultsStream),
     ).scan((accumulator, word, i) => _mergeData(word), []).listen((onData) {
+      _checkIfSearchIsComplete();
       _wordsStream.add(onData);
     });
+  }
+
+  void _checkIfSearchIsComplete() {
+    for (var _apiBloc in _apiLanguageBlocHandlers.values)
+      if (_apiBloc.isStillSearching) {
+        _stillSearching = true;
+        return;
+      }
+    _stillSearching = false;
   }
 
   void dispose() {
@@ -35,6 +46,8 @@ class InternetResultsBloc {
 
   /// Search for a word in each language
   Future<void> searchForWord(String query) async {
+    _stillSearching = true;
+    _wordsStream.add([]); // this will force the UI to rebuild itself with no data, but it will be notified that there's a search going on
     _myAccumulator = [];
     for (var _apiBloc in _apiLanguageBlocHandlers.values) {
       _apiBloc.cancelExistingSearches();
@@ -53,4 +66,6 @@ class InternetResultsBloc {
 
   /// It merges the Observables (one for each language) into one BehaviorSubject
   BehaviorSubject get wordsStream => _wordsStream;
+
+  bool get isStillSearching => _stillSearching;
 }

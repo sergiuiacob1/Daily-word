@@ -43,7 +43,11 @@ abstract class ApiBlocUtils {
       return;
     }
     CancelableCompleter _webSearch = CancelableCompleter();
-    _webSearch.operation.value.then((result) => resultsStream.add(result));
+    _webSearch.operation.value.then((result) {
+      // my search is done
+      webSearches.remove(_webSearch);
+      resultsStream.add(result);
+    });
     _webSearch.complete(apiSearchForWord(_word));
     webSearches.add(_webSearch);
   }
@@ -130,4 +134,5 @@ abstract class ApiBlocUtils {
   PublishSubject get resultsStream => _resultsStream;
 
   bool get languageIsSelected => _languageIsSelected;
+  bool get isStillSearching => webSearches.length > 0;
 }

@@ -3,18 +3,18 @@ import 'internet_results_bloc.dart';
 import './words_storage_bloc.dart';
 
 class DictionaryBloc {
-  final InternetResultsBloc apiBloc = InternetResultsBloc();
+  final InternetResultsBloc _internetResultsBloc = InternetResultsBloc();
   ReplaySubject<String> _query = ReplaySubject<String>();
   BehaviorSubject _searchResults = BehaviorSubject(seedValue: []);
   DictionaryBloc() {
-    _query.distinct().listen(apiBloc.searchForWord);
-    apiBloc.wordsStream.listen((data) => _searchResults.add(data));
+    _query.distinct().listen(_internetResultsBloc.searchForWord);
+    _internetResultsBloc.wordsStream.listen((data) => _searchResults.add(data));
     _listenToFavoriteStatusChanges();
   }
 
   void _listenToFavoriteStatusChanges() async {
     WordsStorageBloc().favoriteWordsStream.listen((onData) {
-      dynamic _lastSearchResults = apiBloc.wordsStream.value;
+      dynamic _lastSearchResults = _internetResultsBloc.wordsStream.value;
       for (var i = 0; i < _lastSearchResults.length; ++i)
         if (onData
                 .where((_favWord) =>
@@ -38,4 +38,6 @@ class DictionaryBloc {
   }
 
   BehaviorSubject get results => _searchResults;
+
+  bool get isStillSearching => _internetResultsBloc.isStillSearching;
 }
