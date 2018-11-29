@@ -38,10 +38,6 @@ abstract class ApiBlocUtils {
   Future<void> searchForWords(String _word);
 
   Future<void> searchForSingleWord(String _word) async {
-    if (_word == '') {
-      _resultsStream.add(null);
-      return;
-    }
     CancelableCompleter _webSearch = CancelableCompleter();
     _webSearch.operation.value.then((result) {
       // my search is done

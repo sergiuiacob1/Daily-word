@@ -34,7 +34,11 @@ class DictionaryBloc {
   }
 
   void handleSearch(String query) async {
-    _query.sink.add(query);
+    _query.sink.add(_format(query));
+  }
+
+  String _format (String _toFormat){
+    return _toFormat.trim();
   }
 
   BehaviorSubject get results => _searchResults;

@@ -48,8 +48,10 @@ class InternetResultsBloc {
   Future<void> searchForWord(String query) async {
     _stillSearching = true;
     _myAccumulator = [];
-    _wordsStream
-        .add([]); // this will force the UI to reload with a "searching" state
+    if (query == '') {
+      _wordsStream.add(null);
+      return;
+    }
     for (var _apiBloc in _apiLanguageBlocHandlers.values) {
       _apiBloc.cancelExistingSearches();
       if (_apiBloc.languageIsSelected == false) continue;
