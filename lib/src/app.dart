@@ -3,13 +3,23 @@ import 'providers/dictionary_provider.dart';
 import 'providers/todays_words_provider.dart';
 import 'providers/favorites_provider.dart';
 import 'providers/settings_provider.dart';
+import './blocs/word_notifier_bloc.dart';
+import './blocs/words_storage_bloc.dart';
 
 class App extends StatelessWidget {
-  App();
+  final WordNotifierBloc _wordNotifier = WordNotifierBloc();
+
+  App() {
+    _initialize();
+  }
+
+  void _initialize() async {
+    _wordNotifier.scheduleNotification();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // _wordNotifier.scheduleNotification();
+    _wordNotifier.testNotification();
     return MaterialApp(
       title: 'Daily Word',
       theme: ThemeData(

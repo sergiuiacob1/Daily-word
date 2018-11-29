@@ -3,15 +3,26 @@ import './../../models/language.dart';
 import 'api_bloc_utils.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
-import './../words_storage_bloc.dart';
 
 class ApiRomanianBloc extends ApiBlocUtils {
   ApiRomanianBloc()
       : super(
           language: 'Romanian',
           getDefinitionUrl: "http://www.dex.ro/{1}",
-          getDailyWordUrl: "",
+          getDailyWordUrl: "https://dexonline.ro/cuvantul-zilei",
         );
+
+  void getDailyWord() async {
+    String _responseBody = await getResponseBody(getDailyWordUrl);
+    if (_responseBody == '') return null;
+    final _html = parse(_responseBody);
+    String _wordName = _html
+        .getElementsByTagName("title")[0]
+        .text
+        .split("): ")[1]
+        .split(" | ")[0];
+    searchForWords(_wordName);
+  }
 
   Future<void> searchForWords(String _word) async {
     searchForSingleWord(_word);
@@ -72,8 +83,6 @@ class ApiRomanianBloc extends ApiBlocUtils {
     // }
 
     if (_rez.definitions.isEmpty) return null;
-
-    WordsStorageBloc().addNewDailyWord(_rez);
     return _rez;
   }
 

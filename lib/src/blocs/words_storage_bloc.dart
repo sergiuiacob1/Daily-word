@@ -106,6 +106,11 @@ class WordsStorageBloc {
   }
 
   void addNewDailyWord(Word word) {
+    if (_todaysWords
+            .where((item) =>
+                item.name == word.name && item.language == word.language)
+            .length >
+        0) return; // don't add the same word twice
     _todaysWords.insert(0, word);
     writeFile(_todaysWords, _todaysWordsFileName);
     _todaysWordsStream.add(_todaysWords);

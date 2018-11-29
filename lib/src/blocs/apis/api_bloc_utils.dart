@@ -32,6 +32,7 @@ abstract class ApiBlocUtils {
 
   void cancelExistingSearches() {
     for (CancelableCompleter _item in webSearches) _item.operation.cancel();
+    webSearches.clear();
   }
 
   Future<void> searchForWords(String _word);
@@ -47,8 +48,49 @@ abstract class ApiBlocUtils {
     webSearches.add(_webSearch);
   }
 
+  // Future<String> getResponseBody(String _url) async {
+  //   String _getRequest = _url;
+  //   var isRedirect = true;
+  //   http.StreamedResponse response;
+
+  //   while (isRedirect) {
+  //     final client = http.Client();
+  //     final request = http.Request('GET', Uri.parse(_getRequest))
+  //       ..followRedirects = false;
+  //     response = await client.send(request);
+  //     switch (response.statusCode) {
+  //       case HttpStatus.notFound:
+  //         return '';
+  //       case HttpStatus.ok:
+  //         return '';
+  //       case HttpStatus.movedPermanently:
+  //       case HttpStatus.movedTemporarily:
+  //         isRedirect = response.isRedirect;
+  //         // debugPrint(response.headers["location"]);
+  //         // List<int> _list = [];
+  //         // for (var i = 0; i < response.headers["location"].length; ++i)
+  //         //   _list.add(response.headers["location"].codeUnitAt(i));
+  //         // debugPrint(_list.toString());
+
+  //         if (_getRequest.endsWith("pasarela") == false) return '';
+  //         _getRequest = response.headers['location'];
+
+  //         final client2 = http.Client();
+  //         final request2 = http.Request('GET', Uri.parse(_getRequest))
+  //           ..followRedirects = false;
+  //         final response2 = await client2.send(request2);
+  //         debugPrint('Ia ce am:');
+  //         debugPrint('redirect');
+  //         return '';
+  //         break;
+  //     }
+  //   }
+
+  //   return '';
+  // }
+
   Future<String> getResponseBody(String _url) async {
-    final _getRequest = _url;
+    var _getRequest = _url;
     var response;
     try {
       response = await http.get(_getRequest);
@@ -65,7 +107,7 @@ abstract class ApiBlocUtils {
     String _responseBody = await getResponseBody(
       getDefinitionUrl.replaceFirst("{1}", _word),
     );
-    if (_responseBody == '') return null;
+    if (_responseBody == null || _responseBody == '') return null;
     _searchResult = buildWord(_word, _responseBody);
     if (_searchResult != null) {
       _searchResult.isFavorite = WordsStorageBloc()

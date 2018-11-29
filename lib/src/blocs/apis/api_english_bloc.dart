@@ -13,6 +13,8 @@ class ApiEnglishBloc extends ApiBlocUtils {
           getDailyWordUrl: "",
         );
 
+  void getDailyWord() {}
+
   Future<void> searchForWords(String _word) async {
     searchForSingleWord(_word);
   }

@@ -2,7 +2,6 @@ import './../models/word.dart';
 import './apis/api_romanian_bloc.dart';
 import './apis/api_english_bloc.dart';
 import 'dart:async';
-
 import 'package:rxdart/rxdart.dart';
 
 class InternetResultsBloc {
@@ -41,6 +40,14 @@ class InternetResultsBloc {
       _apiBloc.cancelExistingSearches();
       if (_apiBloc.languageIsSelected == false) continue;
       _apiBloc.searchForWords(query);
+    }
+  }
+
+  /// This will automatically push the daily words into the [_wordsStream]
+  void getDailyWords() async {
+    for (var _apiBloc in _apiLanguageBlocHandlers.values) {
+      if (_apiBloc.languageIsSelected == false) continue;
+      _apiBloc.getDailyWord();
     }
   }
 
