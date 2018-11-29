@@ -14,7 +14,7 @@ class DictionaryUI extends StatelessWidget {
       key: PageStorageKey("DictionaryUIScroll"),
       scrollDirection: Axis.vertical,
       slivers: <Widget>[
-        _buildSliverAppBar(),
+        PageUtils.buildSliverAppBar(context, title),
         _buildContent(context, dictionaryBloc),
       ],
     );
@@ -95,16 +95,6 @@ class DictionaryUI extends StatelessWidget {
       ),
       onChanged: dictionaryBloc.handleSearch,
       onSubmitted: dictionaryBloc.handleSearch,
-    );
-  }
-
-  Widget _buildSliverAppBar() {
-    return SliverAppBar(
-      expandedHeight: 300.0,
-      pinned: true,
-      flexibleSpace: FlexibleSpaceBar(
-        title: Text("Dictionary"),
-      ),
     );
   }
 }
