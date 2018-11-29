@@ -3,6 +3,7 @@ import './../../models/language.dart';
 import 'api_bloc_utils.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
+import 'dart:convert';
 import './api_keys.dart';
 
 class ApiEnglishBloc extends ApiBlocUtils {
@@ -10,8 +11,9 @@ class ApiEnglishBloc extends ApiBlocUtils {
       : super(
           language: 'English',
           getDefinitionUrl:
-              "https://en.wiktionary.org/w/index.php?title={1}&printable=yes",
-          getDailyWordUrl: "",
+              "https://api.wordnik.com/v4/word.json/{1}/definitions?limit=200&includeRelated=false&useCanonical=true&includeTags=false&api_key=$EnglishApiKey",
+          getDailyWordUrl:
+              "https://api.wordnik.com/v4/words.json/wordOfTheDay?api_key=$EnglishApiKey",
         );
 
   void getDailyWord() {}
@@ -22,7 +24,7 @@ class ApiEnglishBloc extends ApiBlocUtils {
 
   @override
   Word buildWord(String _word, String _responseBody) {
-    bool _defIsEnglish = false;
+    // bool _defIsEnglish = false;
     String _defType = '';
     Word _rez = Word(
       name: _word,
@@ -31,29 +33,14 @@ class ApiEnglishBloc extends ApiBlocUtils {
       isFavorite: false,
     );
 
-    final _html = parse(_responseBody);
-    final _content = _html.getElementsByClassName("mw-parser-output");
-    if (_content.length == 0) return null;
-    List<Element> _children = _content[0].children;
+    final _jsonObject = json.decode(_responseBody);
+    for (dynamic _definition in _jsonObject) {
+      _defType = _definition["partOfSpeech"];
 
-    for (Element _element in _children) {
-      if (_element.outerHtml.startsWith("<h2")) {
-        if (_element.children != null)
-          _defIsEnglish = (_element.children.first.id == "English");
-      }
-      if (_defIsEnglish == false) continue;
-      if (_element.outerHtml.startsWith("<h3")) {
-        _defType = _element.text;
-      }
-      if (_element.outerHtml.startsWith("<ol")) {
-        for (Element _definition in _element.children) {
-          // process the definitions
-          if (_rez.definitions[_defType] == null)
-            _rez.definitions[_defType] = [];
-          _rez.definitions[_defType].add(_definition.text);
-        }
-      }
+      if (_rez.definitions[_defType] == null) _rez.definitions[_defType] = [];
+      _rez.definitions[_defType].add(_definition["text"]);
     }
+
     if (_rez.definitions.isEmpty) return null;
     return _rez;
   }
