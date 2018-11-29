@@ -1,12 +1,9 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import './../blocs/internet_results_bloc.dart';
-import './../blocs/words_storage_bloc.dart';
-import './../models/word.dart';
+import './app_utils_bloc.dart';
 
 class WordNotifierBloc {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  WordsStorageBloc _storageBloc = WordsStorageBloc();
-  InternetResultsBloc _internetResultsBloc = InternetResultsBloc();
+  AppUtilsBloc _appUtilsBloc = AppUtilsBloc();
 
   WordNotifierBloc() {
     var initializationSettingsAndroid =
@@ -17,47 +14,25 @@ class WordNotifierBloc {
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
-
-    _internetResultsBloc.wordsStream.listen((onData) {
-      for (Word _word in onData) {
-        _storageBloc.addNewDailyWord(_word);
-      }
-    });
   }
 
   Future onSelectNotification(String payload) async {
-    _internetResultsBloc.getDailyWords();
-  }
-
-  Future testNotification() async {
-    await flutterLocalNotificationsPlugin.cancelAll();
-    return;
-    print('making notification');
-
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        'repeating channel id',
-        'repeating channel name',
-        'repeating description');
-    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-    var platformChannelSpecifics = new NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.periodicallyShow(0, 'repeating title',
-        'repeating body', RepeatInterval.EveryMinute, platformChannelSpecifics);
+    _appUtilsBloc.addDailyWords();
   }
 
   Future scheduleNotification() async {
-    return;
     var time = new Time(19, 20);
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        '1', 'DailyWord', 'Receive notification with the word of the day');
+        '1', 'DailyWords', 'Receive notification with the daily words');
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.periodicallyShow(0, "test", "body",
-        RepeatInterval.EveryMinute, platformChannelSpecifics);
-
-    // await flutterLocalNotificationsPlugin.showDailyAtTime(
-    //     0, "New daily words!", 'Check it out!', time, platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.periodicallyShow(
+        0,
+        "New daily words!",
+        'Check it out!',
+        RepeatInterval.EveryMinute,
+        platformChannelSpecifics);
   }
 }

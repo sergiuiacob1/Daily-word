@@ -118,4 +118,5 @@ class WordsStorageBloc {
 
   BehaviorSubject get todaysWordsStream => _todaysWordsStream;
   BehaviorSubject get favoriteWordsStream => _favoriteWordsStream;
+  bool get isTodaysWordsEmpty => _todaysWords.length == 0;
 }

@@ -9,7 +9,6 @@ Widget buildWordWidget(BuildContext context, Word word) {
   return Container(
     padding: EdgeInsets.all(8.0),
     width: MediaQuery.of(context).size.width,
-    // height: MediaQuery.of(context).size.height / 8,
     margin: EdgeInsets.all(8.0),
     child: Row(
       children: <Widget>[
@@ -103,11 +102,12 @@ void speakWord(Word word) async {
 
 Widget buildSliverAppBar(BuildContext context, String title) {
   return SliverAppBar(
-    expandedHeight: 300.0,
+    expandedHeight: 250.0,
     pinned: true,
     flexibleSpace: FlexibleSpaceBar(
       title: Text(
         title,
+        textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: Theme.of(context).textTheme.headline.fontSize,
         ),

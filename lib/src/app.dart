@@ -4,22 +4,25 @@ import 'providers/todays_words_provider.dart';
 import 'providers/favorites_provider.dart';
 import 'providers/settings_provider.dart';
 import './blocs/word_notifier_bloc.dart';
-import './blocs/words_storage_bloc.dart';
+import './blocs/app_utils_bloc.dart';
 
 class App extends StatelessWidget {
   final WordNotifierBloc _wordNotifier = WordNotifierBloc();
+  final AppUtilsBloc _appUtilsBloc = AppUtilsBloc();
 
   App() {
     _initialize();
   }
 
   void _initialize() async {
+    if (_appUtilsBloc.isTodaysWordsEmpty) _appUtilsBloc.addDailyWords();
+
+    // schedule notifications
     _wordNotifier.scheduleNotification();
   }
 
   @override
   Widget build(BuildContext context) {
-    _wordNotifier.testNotification();
     return MaterialApp(
       title: 'Daily Word',
       theme: ThemeData(

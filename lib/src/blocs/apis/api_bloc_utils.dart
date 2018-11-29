@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import './../../models/word.dart';
 import './../settings_bloc.dart';
 import './../words_storage_bloc.dart';
-import 'dart:convert';
 
 abstract class ApiBlocUtils {
   PublishSubject _resultsStream = PublishSubject();
@@ -52,47 +51,6 @@ abstract class ApiBlocUtils {
     _webSearch.complete(apiSearchForWord(_word));
     webSearches.add(_webSearch);
   }
-
-  // Future<String> getResponseBody(String _url) async {
-  //   String _getRequest = _url;
-  //   var isRedirect = true;
-  //   http.StreamedResponse response;
-
-  //   while (isRedirect) {
-  //     final client = http.Client();
-  //     final request = http.Request('GET', Uri.parse(_getRequest))
-  //       ..followRedirects = false;
-  //     response = await client.send(request);
-  //     switch (response.statusCode) {
-  //       case HttpStatus.notFound:
-  //         return '';
-  //       case HttpStatus.ok:
-  //         return '';
-  //       case HttpStatus.movedPermanently:
-  //       case HttpStatus.movedTemporarily:
-  //         isRedirect = response.isRedirect;
-  //         // debugPrint(response.headers["location"]);
-  //         // List<int> _list = [];
-  //         // for (var i = 0; i < response.headers["location"].length; ++i)
-  //         //   _list.add(response.headers["location"].codeUnitAt(i));
-  //         // debugPrint(_list.toString());
-
-  //         if (_getRequest.endsWith("pasarela") == false) return '';
-  //         _getRequest = response.headers['location'];
-
-  //         final client2 = http.Client();
-  //         final request2 = http.Request('GET', Uri.parse(_getRequest))
-  //           ..followRedirects = false;
-  //         final response2 = await client2.send(request2);
-  //         debugPrint('Ia ce am:');
-  //         debugPrint('redirect');
-  //         return '';
-  //         break;
-  //     }
-  //   }
-
-  //   return '';
-  // }
 
   Future<String> getResponseBody(String _url) async {
     var _getRequest = _url;
