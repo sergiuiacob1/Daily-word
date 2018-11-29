@@ -3,12 +3,13 @@ import './../../models/language.dart';
 import 'api_bloc_utils.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
+import 'dart:convert';
 
 class ApiRomanianBloc extends ApiBlocUtils {
   ApiRomanianBloc()
       : super(
           language: 'Romanian',
-          getDefinitionUrl: "http://www.dex.ro/{1}",
+          getDefinitionUrl: "https://dexonline.ro/definitie/{1}/json",
           getDailyWordUrl: "https://dexonline.ro/cuvantul-zilei",
         );
 
@@ -38,33 +39,28 @@ class ApiRomanianBloc extends ApiBlocUtils {
       isFavorite: false,
     );
 
-    /// Definitions from dex.ro
-    final _html = parse(_responseBody);
-    var _resultsWrapper = _html.getElementById("results");
-    if (_resultsWrapper == null) return null;
-    List<Element> _definitions = _resultsWrapper.getElementsByClassName("res");
-    for (Element _definition in _definitions) {
-      // find out definition type
-      dynamic _span = _definition.children
-          .where((_element) => _element.outerHtml.startsWith("<span"));
-      if (_span.length == 0)
-        continue;
-      else
-        _defType = _parseDefinitionType(_span.first);
+    // dexonline.ro - JSON response
+    final _jsonObject = json.decode(_responseBody);
+    for (dynamic _definition in _jsonObject["definitions"]) {
+      final _html = parse(_definition["htmlRep"]);
+      final _abbrev = _html.getElementsByClassName("abbrev");
+      if (_abbrev.length == 0) continue;
+      _defType = _parseDefinitionType(_abbrev[0]);
       if (_defType == '') continue;
       if (_rez.definitions[_defType] == null) _rez.definitions[_defType] = [];
-      _rez.definitions[_defType].add(_definition.text);
+      _rez.definitions[_defType]
+          .add(_html.getElementsByTagName("body")[0].text);
     }
 
     if (_rez.definitions.isEmpty) return null;
     return _rez;
   }
 
-  String _parseDefinitionType(Element _span) {
-    String _spanText = _span.text;
-    _spanText = _spanText.replaceAll(" ", "");
-    _spanText = _spanText.replaceAll("\t", "");
-    switch (_spanText) {
+  String _parseDefinitionType(Element _element) {
+    String _elementText = _element.text;
+    _elementText = _elementText.replaceAll(" ", "");
+    _elementText = _elementText.replaceAll("\t", "");
+    switch (_elementText) {
       case "lat.":
         return "Latinesc";
       case "adj.":
@@ -84,8 +80,9 @@ class ApiRomanianBloc extends ApiBlocUtils {
       case "fr.":
         return "Franceză";
       default:
-        return _span.attributes["title"].substring(0, 1).toUpperCase() +
-            _span.attributes["title"].substring(1).toLowerCase();
+        return "";
+      // return _span.attributes["title"].substring(0, 1).toUpperCase() +
+      //     _span.attributes["title"].substring(1).toLowerCase();
     }
   }
 }

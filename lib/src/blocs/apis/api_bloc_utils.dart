@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import './../../models/word.dart';
 import './../settings_bloc.dart';
 import './../words_storage_bloc.dart';
+import 'dart:convert';
 
 abstract class ApiBlocUtils {
   PublishSubject _resultsStream = PublishSubject();
@@ -99,7 +100,7 @@ abstract class ApiBlocUtils {
     try {
       response = await http.get(_getRequest);
     } catch (e) {
-      debugPrint('Erroare la http get for $language: $e');
+      debugPrint('http.get() error for $language: $e');
       return '';
     }
     return response.body;

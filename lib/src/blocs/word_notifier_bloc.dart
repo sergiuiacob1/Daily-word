@@ -22,13 +22,11 @@ class WordNotifierBloc {
       for (Word _word in onData) {
         _storageBloc.addNewDailyWord(_word);
       }
-      print(onData);
     });
   }
 
   Future onSelectNotification(String payload) async {
     _internetResultsBloc.getDailyWords();
-    print(payload);
   }
 
   Future testNotification() async {
