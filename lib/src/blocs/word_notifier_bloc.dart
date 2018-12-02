@@ -29,11 +29,7 @@ class WordNotifierBloc {
     var platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.periodicallyShow(
-        0,
-        "New daily words!",
-        'Check it out!',
-        RepeatInterval.EveryMinute,
-        platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.showDailyAtTime(
+        0, "New daily words!", 'Check it out!', time, platformChannelSpecifics);
   }
 }

@@ -48,15 +48,13 @@ class InternetResultsBloc {
   Future<void> searchForWord(String query) async {
     _stillSearching = true;
     _myAccumulator = [];
-    if (query == '') {
-      _wordsStream.add(null);
-      return;
-    }
     for (var _apiBloc in _apiLanguageBlocHandlers.values) {
       _apiBloc.cancelExistingSearches();
+      if (query == '') continue;
       if (_apiBloc.languageIsSelected == false) continue;
       _apiBloc.searchForWords(query);
     }
+    if (query == '') _wordsStream.add(null);
   }
 
   /// This will automatically push the daily words into the [_wordsStream]

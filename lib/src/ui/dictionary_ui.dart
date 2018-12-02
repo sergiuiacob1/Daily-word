@@ -89,7 +89,7 @@ class DictionaryUI extends StatelessWidget {
         fontSize: Theme.of(context).textTheme.body2.fontSize,
       ),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.all(32.0),
+        contentPadding: EdgeInsets.all(20.0),
         border: UnderlineInputBorder(),
         hintText: 'Cauta un cuvant',
       ),

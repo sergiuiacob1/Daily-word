@@ -105,6 +105,17 @@ Widget buildSliverAppBar(BuildContext context, String title) {
     expandedHeight: 250.0,
     pinned: true,
     flexibleSpace: FlexibleSpaceBar(
+      centerTitle: true,
+      background: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: [0.0, 0.5, 1.0],
+            colors: [Colors.blue, Colors.blue[300], Colors.blue[200]],
+          ),
+        ),
+      ),
       title: Text(
         title,
         textAlign: TextAlign.center,
