@@ -1,8 +1,6 @@
 import './../../models/word.dart';
 import './../../models/language.dart';
 import 'api_bloc_utils.dart';
-import 'package:html/parser.dart';
-import 'package:html/dom.dart';
 import 'dart:convert';
 import './api_keys.dart';
 
@@ -16,7 +14,11 @@ class ApiEnglishBloc extends ApiBlocUtils {
               "https://api.wordnik.com/v4/words.json/wordOfTheDay?api_key=$EnglishApiKey",
         );
 
-  void getDailyWord() {}
+  void getDailyWord() async {
+    String _responseBody = await getResponseBody(getDailyWordUrl);
+    final _jsonObject = json.decode(_responseBody);
+    searchForWords(_jsonObject["word"]);
+  }
 
   Future<void> searchForWords(String _word) async {
     searchForSingleWord(_word);
@@ -24,7 +26,6 @@ class ApiEnglishBloc extends ApiBlocUtils {
 
   @override
   Word buildWord(String _word, String _responseBody) {
-    // bool _defIsEnglish = false;
     String _defType = '';
     Word _rez = Word(
       name: _word,

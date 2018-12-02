@@ -23,6 +23,8 @@ class AppUtilsBloc {
         _storageBloc.addNewDailyWord(_word);
       }
     });
+
+    _internetResultsBloc.getDailyWords();
   }
 
   bool get isTodaysWordsEmpty => _storageBloc.isTodaysWordsEmpty;

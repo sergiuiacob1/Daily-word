@@ -51,7 +51,6 @@ class ApiRomanianBloc extends ApiBlocUtils {
       _rez.definitions[_defType]
           .add(_html.getElementsByTagName("body")[0].text);
     }
-
     if (_rez.definitions.isEmpty) return null;
     return _rez;
   }
