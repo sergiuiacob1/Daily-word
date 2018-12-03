@@ -117,7 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
     for (var i = 0; i < _pages.length; i++) {
       _items.add(
         new BottomNavigationBarItem(
-          backgroundColor: Colors.deepOrangeAccent,
           icon: new Icon(_pageIcons[i]),
           title: new Text(_pageTitles[i]),
         ),
