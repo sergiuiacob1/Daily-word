@@ -35,7 +35,10 @@ class ApiEnglishBloc extends ApiBlocUtils {
     );
 
     final _jsonObject = json.decode(_responseBody);
+    if (_jsonObject.length == 0) return null;
+    _rez.name = _jsonObject[0]["word"];
     for (dynamic _definition in _jsonObject) {
+      if (_definition["word"] != _rez.name) continue;
       _defType = _definition["partOfSpeech"];
 
       if (_rez.definitions[_defType] == null) _rez.definitions[_defType] = [];

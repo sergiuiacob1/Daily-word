@@ -33,7 +33,7 @@ class ApiRomanianBloc extends ApiBlocUtils {
   Word buildWord(String _word, String _responseBody) {
     String _defType = '';
     Word _rez = Word(
-      name: _word,
+      name: '',
       definitions: {},
       language: languages[language],
       isFavorite: false,
@@ -51,6 +51,8 @@ class ApiRomanianBloc extends ApiBlocUtils {
       _rez.definitions[_defType]
           .add(_html.getElementsByTagName("body")[0].text);
     }
+
+    _rez.name = _jsonObject["word"];
     if (_rez.definitions.isEmpty) return null;
     return _rez;
   }
