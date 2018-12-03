@@ -44,7 +44,7 @@ class DictionaryUI extends StatelessWidget {
           if (snapshot.data.length == 0 && !dictionaryBloc.isStillSearching) {
             return SliverFillRemaining(
               child: Center(
-                child: Text("No results"),
+                child: Text("¯\_(ツ)_/¯"),
               ),
             );
           }
@@ -91,7 +91,7 @@ class DictionaryUI extends StatelessWidget {
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(20.0),
         border: UnderlineInputBorder(),
-        hintText: 'Cauta un cuvant',
+        hintText: 'Search...',
       ),
       onChanged: dictionaryBloc.handleSearch,
       onSubmitted: dictionaryBloc.handleSearch,

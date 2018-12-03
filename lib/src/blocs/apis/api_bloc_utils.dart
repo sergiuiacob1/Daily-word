@@ -57,6 +57,7 @@ abstract class ApiBlocUtils {
       debugPrint('http.get() error for $language: $e');
       return '';
     }
+    if (response.statusCode != 200) return '';
     return response.body;
   }
 

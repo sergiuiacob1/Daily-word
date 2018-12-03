@@ -22,7 +22,7 @@ class WordNotifierBloc {
 
   Future scheduleNotification() async {
     await flutterLocalNotificationsPlugin.cancelAll();
-    var time = new Time(19, 20);
+    var time = new Time(12, 0, 0);
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         '1', 'DailyWords', 'Receive notification with the daily words');
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();

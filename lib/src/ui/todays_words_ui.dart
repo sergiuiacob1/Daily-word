@@ -22,7 +22,7 @@ class TodaysWordsUI extends StatelessWidget {
   Widget _buildContent(TodaysWordsBloc todaysWordsBloc) {
     return StreamBuilder(
         stream: todaysWordsBloc.todaysWords,
-        initialData: null,
+        initialData: [],
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.length == 0)
             return SliverPadding(
