@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
+import './../models/language.dart';
 
 class SettingsBloc {
   BehaviorSubject languagesStreamController;
@@ -24,7 +25,9 @@ class SettingsBloc {
 
   void _buildSelectedLanguages() async {
     _pref = await SharedPreferences.getInstance();
-    _selectedLanguages = _pref.getStringList("SelectedLanguages") ?? [];
+    // enable all languages by default
+    _selectedLanguages =
+        _pref.getStringList("SelectedLanguages") ?? languages.keys.toList();
     languagesStreamController.add(_selectedLanguages);
   }
 
