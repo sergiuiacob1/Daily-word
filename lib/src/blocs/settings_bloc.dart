@@ -34,8 +34,10 @@ class SettingsBloc {
   void languageCheck(String languageName, bool value) async {
     if (value)
       _selectedLanguages.add(languageName);
-    else
+    else {
+      if (_selectedLanguages.length == 1) return;
       _selectedLanguages.removeWhere((item) => item == languageName);
+    }
 
     if (_pref != null) {
       await _pref.setStringList("SelectedLanguages", _selectedLanguages);

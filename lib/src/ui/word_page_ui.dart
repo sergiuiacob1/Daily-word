@@ -44,13 +44,12 @@ class WordPageUI extends StatelessWidget {
       _content.add(
         new SliverStickyHeader(
           header: new Container(
-            height: 45.0,
             margin: EdgeInsets.only(bottom: 16.0),
-            color: word.language.color,
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            color: Theme.of(context).accentColor,
+            padding: EdgeInsets.all(16.0),
             alignment: Alignment.centerLeft,
             child: new Text(
-              _defType,
+              "    " + _defType,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: Theme.of(context).textTheme.title.fontSize,
@@ -60,18 +59,29 @@ class WordPageUI extends StatelessWidget {
             ),
           ),
           sliver: new SliverList(
-            delegate: new SliverChildBuilderDelegate((context, i) {
-              if (i % 2 == 0)
-                return Text(
-                  word.definitions[_defType][i ~/ 2],
-                  style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.body2.fontSize,
-                  ),
+            delegate: new SliverChildBuilderDelegate(
+              (context, i) {
+                if (i % 2 == 0)
+                  return Container(
+                    padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: Text(
+                      "    " + word.definitions[_defType][i ~/ 2],
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: Theme.of(context).textTheme.body2.fontSize,
+                      ),
+                    ),
+                  );
+                if (i == word.definitions[_defType].length * 2 - 1)
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 32.0),
+                  );
+                return Divider(
+                  height: 32.0,
                 );
-              return Divider(
-                height: 32.0,
-              );
-            }, childCount: word.definitions[_defType].length * 2 - 1),
+              },
+              childCount: word.definitions[_defType].length * 2,
+            ),
           ),
         ),
       );
