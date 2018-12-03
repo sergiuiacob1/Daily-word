@@ -27,7 +27,7 @@ class App extends StatelessWidget {
       title: 'Daily Word',
       theme: ThemeData(
         primaryColor: Colors.blue,
-        accentColor: Colors.deepOrangeAccent,
+        accentColor: Colors.blueAccent,
         textTheme: TextTheme(
           title: TextStyle(fontSize: 22.0),
           body2: TextStyle(fontSize: 18.0),

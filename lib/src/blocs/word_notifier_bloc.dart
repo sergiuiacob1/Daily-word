@@ -22,7 +22,7 @@ class WordNotifierBloc {
 
   Future scheduleNotification() async {
     await flutterLocalNotificationsPlugin.cancelAll();
-    var time = new Time(12, 0, 0);
+    var time = new Time(11, 0, 0);
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         '1', 'DailyWords', 'Receive notification with the daily words');
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
@@ -30,6 +30,6 @@ class WordNotifierBloc {
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.showDailyAtTime(
-        0, "New daily words!", 'Check it out!', time, platformChannelSpecifics);
+        0, "New daily words", 'Use your daily words in a sentence today!', time, platformChannelSpecifics);
   }
 }

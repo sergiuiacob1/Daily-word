@@ -59,7 +59,9 @@ Widget buildWordWidget(BuildContext context, Word word) {
                         word.isFavorite
                             ? Icons.favorite
                             : Icons.favorite_border,
-                        color: Theme.of(context).accentColor,
+                        color: word.isFavorite
+                            ? Colors.red
+                            : Theme.of(context).accentColor,
                       ),
                       onPressed: () => _changeFavoriteStatus(word),
                     ),
@@ -110,20 +112,29 @@ void speakWord(Word word) async {
 
 Widget buildSliverAppBar(BuildContext context, String title) {
   return SliverAppBar(
+    // backgroundColor: Colors.transparent,
     expandedHeight: 250.0,
     pinned: true,
     flexibleSpace: FlexibleSpaceBar(
       centerTitle: true,
       background: Container(
         decoration: BoxDecoration(
-          // borderRadius: BorderRadius.circular(32.0),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            stops: [0.0, 0.5, 1.0],
-            colors: [Colors.blue, Colors.blue[300], Colors.blue[200]],
-          ),
-        ),
+            // borderRadius: BorderRadius.only(
+            //   bottomLeft: Radius.elliptical(64.0, 32.0),
+            //   bottomRight: Radius.elliptical(64.0, 32.0),
+            // ),
+            // gradient: LinearGradient(
+            //   begin: Alignment.topLeft,
+            //   end: Alignment.bottomRight,
+            //   stops: [0.0, 0.5, 1.0],
+            //   // colors: [Colors.blue, Colors.blue]
+            //   colors: [
+            //     const Color(0xFF2B32B2),
+            //     const Color(0xFF1488CC),
+            //     const Color(0xFF2B32B2),
+            //   ],
+            // ),
+            ),
       ),
       title: Text(
         title,
