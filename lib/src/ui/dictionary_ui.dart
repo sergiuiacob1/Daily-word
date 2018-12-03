@@ -35,7 +35,13 @@ class DictionaryUI extends StatelessWidget {
           if (!snapshot.hasData) {
             return SliverFillRemaining(
               child: Center(
-                child: Text("Write in the text field to search for words"),
+                child: Text(
+                  "Write in the text field to search for words",
+                  style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.title.fontSize,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
             );
           }

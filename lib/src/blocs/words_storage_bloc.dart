@@ -6,8 +6,8 @@ import 'package:rxdart/rxdart.dart';
 import './../models/word.dart';
 
 class WordsStorageBloc {
-  final BehaviorSubject _todaysWordsStream = BehaviorSubject(seedValue: []);
-  final BehaviorSubject _favoriteWordsStream = BehaviorSubject(seedValue: []);
+  final BehaviorSubject _todaysWordsStream = BehaviorSubject();
+  final BehaviorSubject _favoriteWordsStream = BehaviorSubject();
   List<Word> _todaysWords = [], _favoriteWords = [];
   final String _todaysWordsFileName = "todaysWords.txt",
       _favoriteWordsFileName = "favoriteWords.txt";

@@ -59,7 +59,7 @@ Widget buildWordWidget(BuildContext context, Word word) {
                         word.isFavorite
                             ? Icons.favorite
                             : Icons.favorite_border,
-                        color: Colors.redAccent,
+                        color: Theme.of(context).accentColor,
                       ),
                       onPressed: () => _changeFavoriteStatus(word),
                     ),

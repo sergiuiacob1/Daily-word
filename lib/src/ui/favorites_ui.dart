@@ -22,12 +22,21 @@ class FavoritesUI extends StatelessWidget {
   Widget _buildContent(FavoritesBloc favoritesBloc) {
     return StreamBuilder(
         stream: favoritesBloc.favoriteWords,
-        initialData: [],
+        initialData: null,
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.length == 0)
-            return SliverPadding(
-              padding: EdgeInsets.only(top: 999999.9),
+          if (!snapshot.hasData || snapshot.data.length == 0) {
+            return SliverFillRemaining(
+              child: Center(
+                child: Text(
+                  "Your favorite words will appear here",
+                  style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.title.fontSize,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             );
+          }
 
           return SliverList(
             delegate: new SliverChildBuilderDelegate(
