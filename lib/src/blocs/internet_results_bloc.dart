@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 class InternetResultsBloc {
-  BehaviorSubject _wordsStream = BehaviorSubject(seedValue: []);
+  BehaviorSubject _wordsStream = BehaviorSubject();
   List<Word> _myAccumulator = [];
   Map<String, dynamic> _apiLanguageBlocHandlers = {};
   bool _stillSearching = false;

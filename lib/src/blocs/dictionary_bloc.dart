@@ -5,7 +5,7 @@ import './words_storage_bloc.dart';
 class DictionaryBloc {
   final InternetResultsBloc _internetResultsBloc = InternetResultsBloc();
   ReplaySubject<String> _query = ReplaySubject<String>();
-  BehaviorSubject _searchResults = BehaviorSubject(seedValue: []);
+  BehaviorSubject _searchResults = BehaviorSubject();
   DictionaryBloc() {
     _query.distinct().listen(_internetResultsBloc.searchForWord);
     _internetResultsBloc.wordsStream.listen((data) => _searchResults.add(data));
@@ -15,6 +15,7 @@ class DictionaryBloc {
   void _listenToFavoriteStatusChanges() async {
     WordsStorageBloc().favoriteWordsStream.listen((onData) {
       dynamic _lastSearchResults = _internetResultsBloc.wordsStream.value;
+      if (_lastSearchResults == null) return;
       for (var i = 0; i < _lastSearchResults.length; ++i)
         if (onData
                 .where((_favWord) =>
@@ -37,7 +38,7 @@ class DictionaryBloc {
     _query.sink.add(_format(query));
   }
 
-  String _format (String _toFormat){
+  String _format(String _toFormat) {
     return _toFormat.trim();
   }
 

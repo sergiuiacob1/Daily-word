@@ -44,7 +44,12 @@ class DictionaryUI extends StatelessWidget {
           if (snapshot.data.length == 0 && !dictionaryBloc.isStillSearching) {
             return SliverFillRemaining(
               child: Center(
-                child: Text("¯\_(ツ)_/¯"),
+                child: Text(
+                  "¯\\_(ツ)_/¯",
+                  style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.title.fontSize,
+                  ),
+                ),
               ),
             );
           }
