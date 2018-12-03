@@ -64,9 +64,17 @@ Widget buildWordWidget(BuildContext context, Word word) {
                       onPressed: () => _changeFavoriteStatus(word),
                     ),
                     FlatButton(
-                      child: const Text('More...'),
+                      child: Text(
+                        'More',
+                        style: TextStyle(
+                          fontSize: Theme.of(context).textTheme.body1.fontSize,
+                        ),
+                      ),
+                      textTheme: ButtonTextTheme.primary,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0)),
                       color: Theme.of(context).accentColor,
-                      splashColor: word.language.color,
+                      splashColor: Theme.of(context).primaryColor,
                       onPressed: () => _openWordPage(context, word),
                     ),
                   ],
@@ -108,6 +116,7 @@ Widget buildSliverAppBar(BuildContext context, String title) {
       centerTitle: true,
       background: Container(
         decoration: BoxDecoration(
+          // borderRadius: BorderRadius.circular(32.0),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
