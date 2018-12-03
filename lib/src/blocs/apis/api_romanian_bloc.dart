@@ -79,7 +79,26 @@ class ApiRomanianBloc extends ApiBlocUtils {
       case "vb.":
         return "Verb";
       case "fr.":
-        return "Franceză";
+        return "Din Franceză";
+      case "pron.":
+        return "Pronume";
+      case "ppr.":
+      case "pron.pers":
+        return "Pronume personal";
+      case "num.card.":
+        return "Numeral cardinal";
+      case "num.ord.":
+        return "Numeral ordinal";
+      case "num.":
+        return "Numeral";
+      case "conj.":
+        return "Conjuncție";
+      case "prep.":
+        return "Prepoziție";
+      case "art.hot.":
+        return "Articol hotărât";
+      case "art.nehot.":
+        return "Articol nehotărât";
       default:
         return "";
       // return _span.attributes["title"].substring(0, 1).toUpperCase() +

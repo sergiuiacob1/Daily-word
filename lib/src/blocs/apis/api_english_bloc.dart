@@ -40,6 +40,8 @@ class ApiEnglishBloc extends ApiBlocUtils {
     for (dynamic _definition in _jsonObject) {
       if (_definition["word"] != _rez.name) continue;
       _defType = _definition["partOfSpeech"];
+      _defType = _defType[0].toUpperCase() +
+          _defType.substring(1).toLowerCase(); // capitalize the definition
 
       if (_rez.definitions[_defType] == null) _rez.definitions[_defType] = [];
       _rez.definitions[_defType].add(_definition["text"]);
