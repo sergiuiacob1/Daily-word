@@ -46,15 +46,18 @@ class InternetResultsBloc {
 
   /// Search for a word in each language
   Future<void> searchForWord(String query) async {
-    _stillSearching = true;
     _myAccumulator = [];
-    for (var _apiBloc in _apiLanguageBlocHandlers.values) {
+    _wordsStream.add(null); // update the ui with "searching" status
+    for (var _apiBloc in _apiLanguageBlocHandlers.values)
       _apiBloc.cancelExistingSearches();
-      if (query == '') continue;
+    _stillSearching = false;
+    if (query == '') return;
+
+    _stillSearching = true;
+    for (var _apiBloc in _apiLanguageBlocHandlers.values) {
       if (_apiBloc.languageIsSelected == false) continue;
       _apiBloc.searchForWords(query);
     }
-    if (query == '') _wordsStream.add(null);
   }
 
   /// This will automatically push the daily words into the [_wordsStream]

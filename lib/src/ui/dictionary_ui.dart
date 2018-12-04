@@ -32,7 +32,7 @@ class DictionaryUI extends StatelessWidget {
         stream: dictionaryBloc.results,
         builder: (context, snapshot) {
           // Nothing in the search field
-          if (!snapshot.hasData) {
+          if (!snapshot.hasData && !dictionaryBloc.isStillSearching) {
             return SliverFillRemaining(
               child: Center(
                 child: Text(
@@ -42,6 +42,18 @@ class DictionaryUI extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
+              ),
+            );
+          }
+
+          // searching
+          if (!snapshot.hasData && dictionaryBloc.isStillSearching) {
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, i) {
+                  return LinearProgressIndicator();
+                },
+                childCount: 1,
               ),
             );
           }
